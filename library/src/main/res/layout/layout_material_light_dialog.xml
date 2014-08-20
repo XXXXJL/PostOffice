@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/Widget.PostOffice.Material.Light.Dialog.Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        tools:text="Some title"
+        />
+
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/material_spacing"
+        >
+
+        <!-- By Default use a TextView here -->
+        <TextView
+            android:id="@+id/message"
+            style="@style/Widget.PostOffice.Material.Light.Dialog.Message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            tools:text="This is an example of some dialog content warning or telling the user some message. Lorem ipsum dolor set something something something need to burn more space.. ahahahahhahah"
+            />
+
+    </FrameLayout>
+
+
+</LinearLayout>
