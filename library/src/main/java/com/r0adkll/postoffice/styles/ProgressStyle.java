@@ -44,7 +44,7 @@ public class ProgressStyle implements Style {
         LayerDrawable drawable = (LayerDrawable) layout.getResources().getDrawable(R.drawable.progress_material_horizontal);
 
         Drawable bg = drawable.getDrawable(0);
-        int color = design.isLight() ? R.color.material_grey_700 : R.color.material_grey_500;
+        int color = design.isLight() ? R.color.grey_700 : R.color.grey_500;
         bg.setColorFilter(layout.getResources().getColor(color), PorterDuff.Mode.SRC_ATOP);
 
         Drawable secProg = drawable.getDrawable(1);

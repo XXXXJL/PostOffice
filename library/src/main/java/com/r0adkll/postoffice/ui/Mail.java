@@ -149,6 +149,8 @@ public class Mail extends DialogFragment {
                     mButtonContainer.addView(button, params);
                 }
 
+            }else if(mButtonContainer != null && mConstruct.getButtonCount() == 0){
+                mButtonContainer.setVisibility(View.GONE);
             }
 
             // Load Content
@@ -301,7 +303,7 @@ public class Mail extends DialogFragment {
 
         if(delivery.getTitle() != null){
             alertTitle.setText(delivery.getTitle());
-            int color = delivery.getThemeColor() == -1 ? ctx.getResources().getColor(R.color.material_blue_700) : delivery.getThemeColor();
+            int color = delivery.getThemeColor() == -1 ? ctx.getResources().getColor(R.color.blue_700) : delivery.getThemeColor();
             alertTitle.setTextColor(color);
             divider.setBackgroundColor(color);
         }else{

@@ -2,4 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity" >
 
+    <item
+        android:id="@+id/action_theme"
+        android:title="Change Theme"
+        android:icon="@drawable/ic_action_theme_light"
+        android:showAsAction="always" />
+
 </menu>

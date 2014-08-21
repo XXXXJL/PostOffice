@@ -5,8 +5,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -23,6 +28,10 @@ import butterknife.InjectView;
 
 public class MainActivity extends Activity implements View.OnClickListener{
 
+    public static final String PREF_NAME = "PostOfficeExample.prefs";
+    public static final String PREF_THEME = "pref_theme";
+    public static final String PREF_COLOR = "pref_color";
+
     @InjectView(R.id.alert_holo)            Button mAlertHolo;
     @InjectView(R.id.alert_material)        Button mAlertMaterial;
     @InjectView(R.id.edittext_holo)         Button mEdittextHolo;
@@ -32,9 +41,20 @@ public class MainActivity extends Activity implements View.OnClickListener{
     @InjectView(R.id.list_holo)             Button mListHolo;
     @InjectView(R.id.list_material)         Button mListMaterial;
     @InjectView(R.id.defaultDialog)         Button mDefault;
+    @InjectView(R.id.theme_color)           View mThemeColor;
+
+    private SharedPreferences mPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Set Theme based on preference
+        mPrefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        if(isLight()){
+            setTheme(R.style.Theme_Light);
+        }else{
+            setTheme(R.style.Theme_Dark);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
@@ -49,14 +69,65 @@ public class MainActivity extends Activity implements View.OnClickListener{
         mListMaterial.setOnClickListener(this);
         mDefault.setOnClickListener(this);
 
+
+        mThemeColor.setBackgroundColor(getColor());
+        mThemeColor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HSVColorPickerDialog diag = new HSVColorPickerDialog(MainActivity.this, getColor(), new HSVColorPickerDialog.OnColorSelectedListener() {
+                    @Override
+                    public void colorSelected(Integer color) {
+                        mPrefs.edit().putInt(PREF_COLOR, color).commit();
+                        mThemeColor.setBackgroundColor(color);
+                    }
+                });
+                diag.show();
+            }
+        });
+
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_theme:
+                // Toggle preference
+                mPrefs.edit().putBoolean(PREF_THEME, !isLight()).commit();
+
+                // Restart this activity
+                Intent restart = new Intent(this, MainActivity.class);
+                restart.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+
+                overridePendingTransition(0, 0);
+                startActivity(restart);
+
+
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem themeSwitch = menu.findItem(R.id.action_theme);
+        themeSwitch.setIcon(isLight() ? R.drawable.ic_action_theme_light : R.drawable.ic_action_theme_dark);
+        return super.onPrepareOptionsMenu(menu);
+    }
 
     @SuppressLint("ResourceAsColor")
     @Override
     public void onClick(View view) {
         Delivery delivery = null;
         String tag = "";
+        Design holoDesign = isLight() ? Design.HOLO_LIGHT : Design.HOLO_DARK;
+        Design mtrlDesign = isLight() ? Design.MATERIAL_LIGHT : Design.MATERIAL_DARK;
+
         switch (view.getId()){
             case R.id.defaultDialog:
                 new AlertDialog.Builder(this)
@@ -77,9 +148,9 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 // Create and show holo alert style
                 delivery = PostOffice.newMail(this)
                         .setTitle(R.string.title)
-                        .setThemeColor(R.color.background_material_light)
+                        .setThemeColor(getColor())
                         .setMessage(R.string.message)
-                        .setDesign(Design.HOLO_DARK)
+                        .setDesign(holoDesign)
                         .setButton(Dialog.BUTTON_POSITIVE, R.string.action1, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -98,9 +169,9 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 // Create and show holo alert style
                 delivery = PostOffice.newMail(this)
                         .setTitle(R.string.title)
-                        .setThemeColor(R.color.material_green_700)
+                        .setThemeColor(getColor())
                         .setMessage(R.string.message)
-                        .setDesign(Design.MATERIAL_DARK)
+                        .setDesign(mtrlDesign)
                         .setCanceledOnTouchOutside(false)
                         .setButton(Dialog.BUTTON_POSITIVE, R.string.action1, new DialogInterface.OnClickListener() {
                             @Override
@@ -118,8 +189,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
                 delivery = PostOffice.newMail(this)
                         .setTitle(R.string.title)
-                        .setThemeColor(R.color.material_red_700)
-                        .setDesign(Design.HOLO_DARK)
+                        .setThemeColor(getColor())
+                        .setDesign(holoDesign)
                         .showKeyboardOnDisplay(true)
                         .setButton(Dialog.BUTTON_POSITIVE, R.string.action1, new DialogInterface.OnClickListener() {
                             @Override
@@ -150,8 +221,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
                 delivery = PostOffice.newMail(this)
                         .setTitle(R.string.title)
-                        .setThemeColor(R.color.material_blue_500)
-                        .setDesign(Design.MATERIAL_DARK)
+                        .setThemeColor(getColor())
+                        .setDesign(mtrlDesign)
                         .showKeyboardOnDisplay(true)
                         .setButton(Dialog.BUTTON_POSITIVE, R.string.action1, new DialogInterface.OnClickListener() {
                             @Override
@@ -181,8 +252,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
             case R.id.progress_holo:
                 tag = "PROGRESS_HOLO";
                 delivery = PostOffice.newMail(this)
-                        .setThemeColor(R.color.material_yellow_700)
-                        .setDesign(Design.HOLO_LIGHT)
+                        .setThemeColor(getColor())
+                        .setDesign(holoDesign)
                         .setStyle(new ProgressStyle(this))
                         .setCancelable(true)
                         .setCanceledOnTouchOutside(true)
@@ -192,8 +263,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
             case R.id.progress_material:
                 tag = "PROGRESS_MATERIAL";
                 delivery = PostOffice.newMail(this)
-                        .setThemeColor(R.color.material_blue_500)
-                        .setDesign(Design.MATERIAL_DARK)
+                        .setThemeColor(getColor())
+                        .setDesign(mtrlDesign)
                         .setStyle(new ProgressStyle(this))
                         .setCancelable(true)
                         .setCanceledOnTouchOutside(true)
@@ -214,5 +285,17 @@ public class MainActivity extends Activity implements View.OnClickListener{
         // Show the delivery
         if(delivery != null)
             delivery.show(getFragmentManager(), tag);
+    }
+
+    /**
+     * Return the current theme
+     * @return
+     */
+    private boolean isLight(){
+        return mPrefs.getBoolean(PREF_THEME, true);
+    }
+
+    private int getColor(){
+        return mPrefs.getInt(PREF_COLOR, getResources().getColor(R.color.blue_500));
     }
 }

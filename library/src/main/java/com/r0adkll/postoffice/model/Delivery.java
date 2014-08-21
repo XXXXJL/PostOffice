@@ -290,7 +290,12 @@ public class Delivery {
         }
 
         public Builder setThemeColor(int color){
-            delivery.mThemeColor = ctx.getResources().getColor(color);
+            delivery.mThemeColor = color; //= ctx.getResources().getColor(color);
+            return this;
+        }
+
+        public Builder setThemeColorFromResource(int colorResId){
+            delivery.mThemeColor = ctx.getResources().getColor(colorResId);
             return this;
         }
 
