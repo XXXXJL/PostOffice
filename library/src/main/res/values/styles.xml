@@ -12,15 +12,18 @@
         <item name="android:textSize">@dimen/material_message</item>
         <item name="android:textColor">@color/material_light_dialog_message</item>
         <item name="android:alpha">.54</item>
-        <item name="android:layout_marginLeft">@dimen/material_spacing</item>
-        <item name="android:layout_marginRight">@dimen/material_spacing</item>
+        <item name="android:lineSpacingMultiplier">1.15</item>
     </style>
 
     <style name="Widget.PostOffice.Material.Light.Dialog.Button" parent="android:Widget.TextView">
+        <item name="android:layout_width">@dimen/material_button_width</item>
+        <item name="android:layout_height">@dimen/material_button_height</item>
+        <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/material_button_text</item>
         <item name="android:textColor">@color/material_light_dialog_button_default</item>
         <item name="android:alpha">.87</item>
         <item name="android:textAllCaps">true</item>
+        <item name="android:background">@drawable/material_light_button_selector</item>
     </style>
 
 
@@ -35,15 +38,18 @@
         <item name="android:textSize">@dimen/material_message</item>
         <item name="android:textColor">@color/material_dark_dialog_message</item>
         <item name="android:alpha">.54</item>
-        <item name="android:layout_marginLeft">@dimen/material_spacing</item>
-        <item name="android:layout_marginRight">@dimen/material_spacing</item>
+        <item name="android:lineSpacingMultiplier">1.15</item>
     </style>
 
     <style name="Widget.PostOffice.Material.Dark.Dialog.Button" parent="android:Widget.TextView">
+        <item name="android:layout_width">@dimen/material_button_width</item>
+        <item name="android:layout_height">@dimen/material_button_height</item>
+        <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/material_button_text</item>
-        <item name="android:textColor">@color/material_light_dialog_button_default</item>
+        <item name="android:textColor">@color/material_dark_dialog_button_default</item>
         <item name="android:alpha">.87</item>
         <item name="android:textAllCaps">true</item>
+        <item name="android:background">@drawable/material_dark_button_selector</item>
     </style>
 
     <!--

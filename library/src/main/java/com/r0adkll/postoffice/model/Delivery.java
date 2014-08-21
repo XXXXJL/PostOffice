@@ -1,5 +1,6 @@
 package com.r0adkll.postoffice.model;
 
+import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -24,10 +25,12 @@ public class Delivery {
      */
 
     private Context mCtx;
+    private Mail mActiveMail;
 
     private CharSequence mTitle;
     private CharSequence mMessage;
-    private int mIcon;
+    private int mIcon = -1;
+    private int mThemeColor = -1;
 
     private SparseArray<ButtonConfig> mButtonMap;
     private SparseIntArray mButtonTextColorMap;
@@ -62,6 +65,10 @@ public class Delivery {
 
     public CharSequence getTitle(){
         return mTitle;
+    }
+
+    public int getThemeColor(){
+        return mThemeColor;
     }
 
     public CharSequence getMessage() {
@@ -102,6 +109,18 @@ public class Delivery {
 
     public SparseArray<ButtonConfig> getButtonConfig(){
         return mButtonMap;
+    }
+
+    public DialogInterface.OnCancelListener getOnCancelListener(){
+        return mOnCancelListener;
+    }
+
+    public DialogInterface.OnDismissListener getOnDismissListener(){
+        return mOnDismissListener;
+    }
+
+    public DialogInterface.OnShowListener getOnShowListener(){
+        return mOnShowListener;
     }
 
     /**********************************************************
@@ -165,8 +184,8 @@ public class Delivery {
      * @return
      */
     private Mail generateDialogFragment(){
-        Mail mail = new Mail();
-        mail.applyConfiguration(this);
+        Mail mail = Mail.createInstance();
+        mail.setConfiguration(this);
         return mail;
     }
 
@@ -186,10 +205,9 @@ public class Delivery {
      * @param tag           the tag for the dialog fragment in the manager
      */
     public void show(FragmentManager manager, String tag){
-
         // Generate the appropriate DialogFragment
-
-
+        mActiveMail = generateDialogFragment();
+        mActiveMail.show(manager, tag);
     }
 
     /**
@@ -201,9 +219,9 @@ public class Delivery {
      * @param tag           the tag for the dialog fragment in the manager
      */
     public void show(FragmentTransaction transaction, String tag){
-
         // Generate the appropriate DialogFragment
-
+        mActiveMail = generateDialogFragment();
+        mActiveMail.show(transaction, tag);
     }
 
     /**
@@ -212,8 +230,8 @@ public class Delivery {
      * @see android.app.Dialog#show()
      */
     public void show(){
-
         // Generate the appropriate AlertDialog
+
 
     }
 
@@ -224,7 +242,9 @@ public class Delivery {
      * @see android.app.DialogFragment#dismiss()
      */
     public void dismiss(){
-
+        if(mActiveMail != null){
+            mActiveMail.dismiss();
+        }
     }
 
     /**********************************************************
@@ -269,6 +289,11 @@ public class Delivery {
             return this;
         }
 
+        public Builder setThemeColor(int color){
+            delivery.mThemeColor = ctx.getResources().getColor(color);
+            return this;
+        }
+
         public Builder setMessage(CharSequence msg){
             delivery.mMessage = msg;
             return this;
@@ -300,7 +325,7 @@ public class Delivery {
         }
 
         public Builder setButtonTextColor(int whichButton, int color){
-            delivery.mButtonTextColorMap.put(whichButton, color);
+            delivery.mButtonTextColorMap.put(whichButton, ctx.getResources().getColor(color));
             return this;
         }
 
@@ -326,10 +351,21 @@ public class Delivery {
 
         public Builder setStyle(Style style){
             delivery.mStyle = style;
+            delivery.mStyle.applyDesign(delivery.getDesign(), delivery.mThemeColor);
             return this;
         }
 
         public Delivery build(){
+
+            // Ensure that simple alerts have an ok to dismiss button
+            if(delivery.getStyle() == null && delivery.getButtonCount() == 0){
+                this.setButton(Dialog.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
+                    @Override public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+            }
+
             return delivery;
         }
 

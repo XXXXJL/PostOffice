@@ -4,17 +4,28 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.SparseArray;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.ftinc.fontloader.FontLoader;
+import com.ftinc.fontloader.Types;
+import com.r0adkll.postoffice.R;
 import com.r0adkll.postoffice.model.Delivery;
+import com.r0adkll.postoffice.styles.EditTextStyle;
 import com.r0adkll.postoffice.styles.Style;
 
 /**
@@ -53,6 +64,13 @@ public class Mail extends DialogFragment {
      *
      */
 
+    private InputMethodManager mImm;
+
+    private TextView mTitle;
+    private TextView mMessage;
+    private FrameLayout mContentFrame;
+    private LinearLayout mButtonContainer;
+
     private Delivery mConstruct;
 
     /**
@@ -70,6 +88,94 @@ public class Mail extends DialogFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        // Load mImm
+        mImm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        if(mConstruct != null && mConstruct.getDesign().isMaterial()) {
+
+            // Apply construct to UI
+            if (mTitle != null && mMessage != null) {
+                if (mConstruct.getTitle() != null){
+                    mTitle.setText(mConstruct.getTitle());
+                }else{
+                    mTitle.setVisibility(View.GONE);
+                }
+
+                if (mConstruct.getMessage() != null) mMessage.setText(mConstruct.getMessage());
+                else mContentFrame.removeView(mMessage);
+
+                if (mConstruct.getDesign().isMaterial()) {
+                    FontLoader.applyTypeface(mTitle, Types.ROBOTO_MEDIUM);
+                    FontLoader.applyTypeface(mMessage, Types.ROBOTO_REGULAR);
+                }
+            }
+
+            if (mButtonContainer != null && mConstruct.getButtonConfig().size() > 0) {
+
+                // Iterate through config, and setup the button states
+                SparseArray<Delivery.ButtonConfig> config = mConstruct.getButtonConfig();
+                int N = config.size();
+                for (int i = 0; i < N; i++) {
+                    final int key = config.keyAt(i);
+                    final Delivery.ButtonConfig cfg = config.get(key);
+
+                    // Pull button Color
+                    int textColor = mConstruct.getButtonTextColor(key);
+                    Spannable title = new SpannableString(cfg.title);
+                    if (textColor != 0) {
+                        title.setSpan(new ForegroundColorSpan(textColor), 0, cfg.title.length(), 0);
+                    }
+
+                    // Create and add buttons (in order) to the button container
+                    TextView button = (TextView)getActivity().getLayoutInflater().inflate(mConstruct.getDesign().isLight() ? R.layout.material_light_dialog_button : R.layout.material_dark_dialog_button, null, false);
+                    FontLoader.applyTypeface(button, Types.ROBOTO_MEDIUM);
+                    button.setId(key);
+                    button.setText(cfg.title);
+                    button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            cfg.listener.onClick(getDialog(), key);
+                            if(mConstruct.getStyle() != null){
+                                mConstruct.getStyle().onButtonClicked(key, getDialog());
+                            }
+                        }
+                    });
+
+                    // add to layout
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                            getResources().getDimensionPixelSize(R.dimen.material_button_width),
+                            getResources().getDimensionPixelSize(R.dimen.material_button_height));
+
+                    mButtonContainer.addView(button, params);
+                }
+
+            }
+
+            // Load Content
+            if (mContentFrame != null && mConstruct.getStyle() != null) {
+                mContentFrame.addView(mConstruct.getStyle().getContentView());
+            }
+
+        }
+
+        // Lastly apply the other dialog options
+        setCancelable(mConstruct.isCancelable());
+        getDialog().setCanceledOnTouchOutside(mConstruct.isCanceledOnTouchOutside());
+        getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                if(mConstruct.getOnShowListener() != null) mConstruct.getOnShowListener().onShow(dialog);
+
+                if(mConstruct.isShowKeyboardOnDisplay()){
+                    if(mConstruct.getStyle() instanceof EditTextStyle){
+                        EditText et =((EditTextStyle) mConstruct.getStyle()).getEditTextView();
+                        mImm.showSoftInput(et, InputMethodManager.SHOW_IMPLICIT);
+                    }
+                }
+
+            }
+        });
+
     }
 
 
@@ -78,9 +184,23 @@ public class Mail extends DialogFragment {
         if(mConstruct == null) {
             return super.onCreateView(inflater, container, savedInstanceState);
         }else{
-            View view = null;
+            View view;
 
             // Depending on the style, load the appropriate layout
+            if(mConstruct.getDesign().isMaterial()){
+                if(mConstruct.getDesign().isLight()){
+                    view = inflater.inflate(R.layout.layout_material_light_dialog, container, false);
+                }else{
+                    view = inflater.inflate(R.layout.layout_material_dark_dialog, container, false);
+                }
+
+                mTitle = (TextView) view.findViewById(R.id.title);
+                mMessage = (TextView) view.findViewById(R.id.message);
+                mContentFrame = (FrameLayout) view.findViewById(R.id.content_frame);
+                mButtonContainer = (LinearLayout) view.findViewById(R.id.button_container);
+            }else{
+                view = super.onCreateView(inflater, container, savedInstanceState);
+            }
 
             return view;
         }
@@ -92,28 +212,38 @@ public class Mail extends DialogFragment {
         Dialog diag;
 
         // Disable the title if the title data isn't null
-        if(mConstruct != null){
+        if(mConstruct != null && !mConstruct.getDesign().isMaterial()){
 
             // Construct the Dialog Object
-            if(mConstruct.getStyle() == null){
-                diag = buildAlertDialog(getActivity(), mConstruct);
-            }else{
-                diag = super.onCreateDialog(savedInstanceState);
-            }
+            diag = buildAlertDialog(getActivity(), mConstruct);
 
-            boolean cond1 = mConstruct.getTitle() == null && !mConstruct.getDesign().isMaterial();
-            boolean cond2 = mConstruct.getDesign().isMaterial();
+            // Remove the Title Feature
+            int theme = mConstruct.getDesign().isLight() ? android.R.style.Theme_Holo_Light : android.R.style.Theme_Holo;
+            setStyle(STYLE_NO_TITLE, theme);
 
-            if(cond1 || cond2) {
-
-                // Remove the Title Feature
-                diag.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-            }
         }else{
             diag = super.onCreateDialog(savedInstanceState);
+            if(mConstruct != null) {
+                int theme = mConstruct.getDesign().isLight() ? android.R.style.Theme_Holo_Light : android.R.style.Theme_Holo;
+                setStyle(STYLE_NO_TITLE, theme);
+            }
+
         }
 
+
         return diag;
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if(mConstruct != null && mConstruct.getOnDismissListener() != null) mConstruct.getOnDismissListener().onDismiss(dialog);
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        super.onCancel(dialog);
+        if(mConstruct != null && mConstruct.getOnCancelListener() != null) mConstruct.getOnCancelListener().onCancel(dialog);
     }
 
     /**********************************************************
@@ -127,11 +257,8 @@ public class Mail extends DialogFragment {
      *
      * @param delivery      the delivery configuration construct
      */
-    public void applyConfiguration(Delivery delivery){
+    public void setConfiguration(Delivery delivery){
         mConstruct = delivery;
-
-        // Apply the construct
-
     }
 
     /**
@@ -142,7 +269,7 @@ public class Mail extends DialogFragment {
      * @param delivery      the delivery configuration construct
      * @return              the built AlertDialog
      */
-    public static AlertDialog buildAlertDialog(Context ctx, Delivery delivery){
+    public static AlertDialog buildAlertDialog(Context ctx, final Delivery delivery){
         int theme = AlertDialog.THEME_HOLO_LIGHT;
         switch(delivery.getDesign()){
             case HOLO_LIGHT:
@@ -162,17 +289,43 @@ public class Mail extends DialogFragment {
         // Create the dialog builder
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx, theme);
 
-        boolean cond1 = delivery.getTitle() == null && !delivery.getDesign().isMaterial();
-        boolean cond2 = delivery.getDesign().isMaterial();
+        View view = LayoutInflater.from(ctx).inflate(R.layout.layout_holo_dialog, null, false);
+        view.setMinimumWidth((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300, ctx.getResources().getDisplayMetrics()));
+        ImageView icon = (ImageView)view.findViewById(R.id.icon);
+        TextView alertTitle = (TextView)view.findViewById(R.id.alertTitle);
+        TextView mMessage = (TextView)view.findViewById(R.id.message);
+        View divider = view.findViewById(R.id.titleDivider);
+        FrameLayout customContent = (FrameLayout)view.findViewById(R.id.customPanel);
+        LinearLayout topPanel = (LinearLayout)view.findViewById(R.id.topPanel);
+        LinearLayout contentPanel = (LinearLayout)view.findViewById(R.id.contentPanel);
 
-        if(!cond1 && !cond2){
-            builder.setTitle(delivery.getTitle());
+        if(delivery.getTitle() != null){
+            alertTitle.setText(delivery.getTitle());
+            int color = delivery.getThemeColor() == -1 ? ctx.getResources().getColor(R.color.material_blue_700) : delivery.getThemeColor();
+            alertTitle.setTextColor(color);
+            divider.setBackgroundColor(color);
+        }else{
+            topPanel.setVisibility(View.GONE);
         }
+
+        if(delivery.getIcon() != -1){
+            icon.setImageResource(delivery.getIcon());
+        }else{
+            icon.setVisibility(View.GONE);
+        }
+
+        // Set the content
 
         // if the style is null, and the message exists in the construct, set the alert dialog message
-        if(delivery.getStyle() == null && delivery.getMessage() != null && !delivery.getDesign().isMaterial()){
-            builder.setMessage(delivery.getMessage());
+        if(delivery.getStyle() == null && delivery.getMessage() != null){
+            mMessage.setText(delivery.getMessage());
+            mMessage.setTextColor(ctx.getResources().getColor(delivery.getDesign().isLight() ? R.color.background_material_dark : R.color.background_material_light));
+        }else{
+            contentPanel.setVisibility(View.GONE);
         }
+
+        // set the custom content
+        builder.setView(view);
 
         // If it isn't material design, apply the button constructs
         if(!delivery.getDesign().isMaterial()){
@@ -182,7 +335,7 @@ public class Mail extends DialogFragment {
             int N = config.size();
             for(int i=0; i<N; i++){
                 int key = config.keyAt(i);
-                Delivery.ButtonConfig cfg = config.get(key);
+                final Delivery.ButtonConfig cfg = config.get(key);
 
                 // Pull button Color
                 int textColor = delivery.getButtonTextColor(key);
@@ -194,13 +347,37 @@ public class Mail extends DialogFragment {
                 // Ensure that they are using the correct which buttons
                 switch (key){
                     case AlertDialog.BUTTON_POSITIVE:
-                        builder.setPositiveButton(title, cfg.listener);
+                        builder.setPositiveButton(title, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                cfg.listener.onClick(dialog, which);
+                                if(delivery.getStyle() != null){
+                                    delivery.getStyle().onButtonClicked(which, dialog);
+                                }
+                            }
+                        });
                         break;
                     case AlertDialog.BUTTON_NEGATIVE:
-                        builder.setNegativeButton(title, cfg.listener);
+                        builder.setNegativeButton(title, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                cfg.listener.onClick(dialog, which);
+                                if(delivery.getStyle() != null){
+                                    delivery.getStyle().onButtonClicked(which, dialog);
+                                }
+                            }
+                        });
                         break;
                     case AlertDialog.BUTTON_NEUTRAL:
-                        builder.setNeutralButton(title, cfg.listener);
+                        builder.setNeutralButton(title, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                cfg.listener.onClick(dialog, which);
+                                if(delivery.getStyle() != null){
+                                    delivery.getStyle().onButtonClicked(which, dialog);
+                                }
+                            }
+                        });
                         break;
                 }
             }
@@ -208,7 +385,7 @@ public class Mail extends DialogFragment {
 
         if(delivery.getStyle() != null && !delivery.getDesign().isMaterial()){
             Style style = delivery.getStyle();
-            builder.setView(style.getContentView());
+            customContent.addView(style.getContentView());
         }
 
         // Create the dialog and return it

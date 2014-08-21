@@ -41,4 +41,13 @@ public enum Design {
         return this == MATERIAL_LIGHT || this == MATERIAL_DARK;
     }
 
+    /**
+     * Return whether or not this design is light or dark
+     *
+     * @return      true if LIGHT theme, false if DARK
+     */
+    public boolean isLight(){
+        return this == MATERIAL_LIGHT || this == HOLO_LIGHT;
+    }
+
 }
