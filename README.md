@@ -84,7 +84,8 @@ Here is the list of delivery interface methods
 	PostOffice.newAlertMail(ctx, R.string.title, R.string.message)
 		      .show(getFragmentManager(), null);
 	
-## ImplementingAdd this line to your gradle dependencies
+## Implementing
+Add this line to your gradle dependencies
 
 	compile 'com.r0adkll:postoffice:+'
 
