@@ -1,7 +1,4 @@
-PostOffice
-==========
-
-### !!! WORK IN PROGRESS !!!
+# PostOffice
 
 This is a library for easily constructing Holo and Material Design Dialogs.
 There are screenshots of my progress in the /images folder as this is a work in progress.
@@ -9,6 +6,15 @@ There are screenshots of my progress in the /images folder as this is a work in 
 ## Usage
 
 Call `PostOffice.newMail()` to start building a new dialog. This method will return a `Delivery` object which is an interface into the actual system Dialog that is created from the builder. 
+
+_OR_ 
+
+Call one of the simpler quick call items;
+	
+	PostOffice.newAlertMail(Context, Title, Message)
+	PostOffice.newEditTextMail(Context, Title, Hint, InputType, OnTextAcceptedListener)
+	PostOffice.newProgressMail(Context, Title, Suffix, Indeterminate);
+	PostOffice.newSimpleListMail(Context, Title, Design, Contents[], OnItemAcceptedListener<T>)
 
 ### Mail Interface
 
@@ -23,30 +29,39 @@ Call `PostOffice.newMail()` to start building a new dialog. This method will ret
 			.showKeyboardOnDisplay(Boolean)
 			.setCancelable(Boolean)
 			.setCanceledOnTouchOutside(Boolean)
-			.setDesign(Designs.<HOLO|MATERIAL|CUSTOM>)
+			.setDesign(Designs.<HOLO|MATERIAL>_<LIGHT|DARK>)
 			
 			.setStyle(
-				EditTextStyle,			// Dialog with input field content
+				new EditTextStyle.Builder(Context)
 					.setText(CharSequence)
 					.setHint(CharSequence)
 					.setTextColor(Integer)
 					.setHintColor(Integer)
 					.addTextWatcher(TextWatcher)
 					.setInputType(Integer)
-				ProgressStyle,			// Progress Dialog with a title, read/total, percentage
-					.setProgress(Integer)
-					.setTotal(Integer)
+					.setOnTextAcceptedListener(OnTextAcceptedListener)
+					.build
+				new ProgressStyle.Builder(Context)
+					.setSuffix(String)	
+					.setCloseOnFinish(Boolean)
+					.setPercentageMode(Boolean)
 					.setInterdeterminate(Boolean)
-				ListStyle,				// Dialog with list content TODO
-					.setAdapter(ListAdapter)
+					.build()
+				new ListStyle.Builder(Context)
 					.setDividerHeight(Float)
-					.setDivider(Integer|Drawable)
-					.setListSelector(Integer)
+					.setDivider(Drawable)
+					.setListSelector(<Integer|Drawable>)
 					.setDrawSelectorOnTop(Boolean)
-				WebViewStyle,			// Dialog with WebView content
-					.setUrl(String)
-				CustomStyle				// Dialog with custom view content (this may or may not be useful)
-					.setContentView(View);
+					.setFooterDividersEnabled(Boolean)
+					.setHeaderDividersEnabled(Boolean)
+					.addHeader(View)
+					.addHeader(View, Object, Boolean)
+					.addFooter(View)
+					.addFooter(View, Object, Boolean)
+					.setOnItemClickListener(OnItemClickListener)
+					.setOnItemLongClickListener(OnItemLongClickListener)
+					.setOnItemAcceptedListener(OnItemAcceptedListener<T>)
+					.build(BaseAdapter)
 			)
 			.build();
 			
@@ -64,9 +79,12 @@ Here is the list of delivery interface methods
 	.show()									               // Create AlertDialog instance
 	.dismiss()
 	
-## Implementing
-**[COMING SOON]**  
-Add this line to your gradle dependencies
+## Example Usage
+
+	PostOffice.newAlertMail(ctx, R.string.title, R.string.message)
+		      .show(getFragmentManager(), null);
+	
+## ImplementingAdd this line to your gradle dependencies
 
 	compile 'com.r0adkll:postoffice:+'
 

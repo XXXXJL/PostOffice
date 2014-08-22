@@ -244,7 +244,6 @@ public class PostOffice {
                 .build();
     }
 
-
     /**
      * If possible, apply the default stamp to this outgoing delivery
      *
