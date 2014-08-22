@@ -1,5 +1,5 @@
 # PostOffice 
-**Version 1.0.0**
+[**Version 1.0.0**](id:version)
 
 This is a library for easily constructing Holo and Material Design Dialogs.
 There are screenshots of my progress in the /images folder as this is a work in progress.
@@ -84,11 +84,15 @@ Here is the list of delivery interface methods
 
 	PostOffice.newAlertMail(ctx, R.string.title, R.string.message)
 		      .show(getFragmentManager(), null);
+		    
+		    
+![Home](images/example_home.png)  ![Alert Holo](images/example_alert_holo.png)
+![Alert Mtrl](images/example_alert_material_design.png)  ![EditText](images/example_edittext_material.png)
 	
 ## Implementing
 Add this line to your gradle dependencies
 
-	compile 'com.r0adkll:postoffice:<current_version>'
+	compile 'com.r0adkll:postoffice:1.0.0'
 
 ## Author
 
