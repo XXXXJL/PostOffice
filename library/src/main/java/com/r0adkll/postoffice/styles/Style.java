@@ -34,5 +34,11 @@ public interface Style {
      */
     public void onButtonClicked(int which, DialogInterface dialogInterface);
 
+    /**
+     * Called when the dialog this style is attached to is shown
+     *
+     * @param dialog        the dialog interface
+     */
+    public void onDialogShow(DialogInterface dialog);
 
 }

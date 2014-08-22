@@ -26,6 +26,7 @@ import com.ftinc.fontloader.Types;
 import com.r0adkll.postoffice.R;
 import com.r0adkll.postoffice.model.Delivery;
 import com.r0adkll.postoffice.styles.EditTextStyle;
+import com.r0adkll.postoffice.styles.ProgressStyle;
 import com.r0adkll.postoffice.styles.Style;
 
 /**
@@ -167,6 +168,7 @@ public class Mail extends DialogFragment {
             @Override
             public void onShow(DialogInterface dialog) {
                 if(mConstruct.getOnShowListener() != null) mConstruct.getOnShowListener().onShow(dialog);
+                if(mConstruct.getStyle() != null) mConstruct.getStyle().onDialogShow(dialog);
 
                 if(mConstruct.isShowKeyboardOnDisplay()){
                     if(mConstruct.getStyle() instanceof EditTextStyle){

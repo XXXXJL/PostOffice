@@ -12,6 +12,9 @@ import com.r0adkll.postoffice.styles.Style;
 import com.r0adkll.postoffice.ui.Mail;
 
 /**
+ * This is the main construct that contains all the configuration data needed
+ * to construct a dialog.
+ *
  * Project: PostOffice
  * Package: com.r0adkll.postoffice.model
  * Created by drew.heavner on 8/20/14.
@@ -63,62 +66,139 @@ public class Delivery {
      *
      */
 
+    /**
+     * Get the title of this Delivery
+     *
+     * @return      the dialog title
+     */
     public CharSequence getTitle(){
         return mTitle;
     }
 
+    /**
+     * Get the theme color of this Delivery
+     *
+     * @return      the theme color
+     */
     public int getThemeColor(){
         return mThemeColor;
     }
 
+    /**
+     * Get the message of this Delivery
+     *
+     * @return      the dialog message
+     */
     public CharSequence getMessage() {
         return mMessage;
     }
 
+    /**
+     * Get the Delivery icon
+     *
+     * @return      the dialog icon
+     */
     public int getIcon() {
         return mIcon;
     }
 
+    /**
+     * Return whether or not this is to show the keyboard on display
+     *
+     * @return      the flag
+     */
     public boolean isShowKeyboardOnDisplay() {
         return mShowKeyboardOnDisplay;
     }
 
+    /**
+     * Return whether or not this Delivery is cancelable
+     *
+     * @return      the flag
+     */
     public boolean isCancelable() {
         return mCancelable;
     }
 
+    /**
+     * Return whether or not this Delivery is canceled on outside touch
+     *
+     * @return      the flag
+     */
     public boolean isCanceledOnTouchOutside() {
         return mCanceledOnTouchOutside;
     }
 
+    /**
+     * Get the design of the delivery
+     *
+     * @return      the delivery design
+     */
     public Design getDesign() {
         return mDesign;
     }
 
+    /**
+     * Get the number of buttons in this Delivery
+     *
+     * @return      the number of registered button configurations
+     */
     public int getButtonCount(){
         return mButtonMap.size();
     }
 
+    /**
+     * Get a button configuration for a given button index
+     *
+     * @see Dialog#BUTTON_POSITIVE
+     * @see Dialog#BUTTON_NEGATIVE
+     * @see Dialog#BUTTON_NEUTRAL
+     * @param whichButton       the button to get the config for
+     * @return      the associated button configuration
+     */
     public ButtonConfig getButtonConfig(int whichButton){
         return mButtonMap.get(whichButton);
     }
 
+    /**
+     * Get the text color for a given button
+     *
+     * @see Dialog#BUTTON_POSITIVE
+     * @see Dialog#BUTTON_NEGATIVE
+     * @see Dialog#BUTTON_NEUTRAL
+     * @param whichButton       the button to get the color for
+     * @return      the button text color, or 0
+     */
     public int getButtonTextColor(int whichButton){
         return mButtonTextColorMap.get(whichButton);
     }
 
+    /**
+     * Get all the button configurations
+     *
+     * @return      the map of button config
+     */
     public SparseArray<ButtonConfig> getButtonConfig(){
         return mButtonMap;
     }
 
+    /**
+     * Get the {@link android.content.DialogInterface.OnCancelListener} for the dialog
+     */
     public DialogInterface.OnCancelListener getOnCancelListener(){
         return mOnCancelListener;
     }
 
+    /**
+     * Get the {@link android.content.DialogInterface.OnDismissListener} for the dialog
+     */
     public DialogInterface.OnDismissListener getOnDismissListener(){
         return mOnDismissListener;
     }
 
+    /**
+     * Get the {@link android.content.DialogInterface.OnShowListener} for the dialog
+     */
     public DialogInterface.OnShowListener getOnShowListener(){
         return mOnShowListener;
     }
@@ -267,99 +347,237 @@ public class Delivery {
 
         /**
          * Constructor
-         * @param ctx
+         * @param ctx       the application context
          */
         public Builder(Context ctx){
             this.ctx = ctx;
             delivery = new Delivery(ctx);
         }
 
+        /**
+         * Set the dialog title
+         *
+         * @param title     the dialog title
+         * @return          self for chaining
+         */
         public Builder setTitle(CharSequence title){
             delivery.mTitle = title;
             return this;
         }
 
+        /**
+         * Set the dialog title
+         *
+         * @param titleResId    the dialog title resource id
+         * @return              self for chaining
+         */
         public Builder setTitle(int titleResId){
             delivery.mTitle = ctx.getString(titleResId);
             return this;
         }
 
+        /**
+         * Set the dialog title
+         *
+         * @param titleResId    the dialog title resource id
+         * @param args          the title format arguments
+         * @return              self for chaining
+         */
         public Builder setTitle(int titleResId, Object... args){
             delivery.mTitle = ctx.getString(titleResId, args);
             return this;
         }
 
+        /**
+         * Set the theme color
+         *
+         * @param color     the color to set
+         * @return          self for chaining
+         */
         public Builder setThemeColor(int color){
             delivery.mThemeColor = color; //= ctx.getResources().getColor(color);
             return this;
         }
 
+        /**
+         * Set the theme color from a resource file
+         *
+         * @param colorResId        the color resource to set
+         * @return                  self for chaining
+         */
         public Builder setThemeColorFromResource(int colorResId){
             delivery.mThemeColor = ctx.getResources().getColor(colorResId);
             return this;
         }
 
+        /**
+         * Set the dialog message
+         *
+         * @param msg       the dialog message
+         * @return          self for chaining
+         */
         public Builder setMessage(CharSequence msg){
             delivery.mMessage = msg;
             return this;
         }
 
+        /**
+         * Set the dialog message from resource
+         *
+         * @param msgResId      the message resource id
+         * @return              self for chaining
+         */
         public Builder setMessage(int msgResId){
             delivery.mMessage = ctx.getString(msgResId);
             return this;
         }
 
+        /**
+         * Set the dialog message with arguments
+         *
+         * @param msgResId      the message resource id with format arguments
+         * @param args          the arguments to become formatted
+         * @return              self for chaining
+         */
         public Builder setMessage(int msgResId, Object... args){
             delivery.mMessage = ctx.getString(msgResId, args);
             return this;
         }
 
+        /**
+         * Set the dialog title from resources
+         *
+         * @param iconResId     the icon resource id
+         * @return              self for chaining
+         */
         public Builder setIcon(int iconResId){
             delivery.mIcon = iconResId;
             return this;
         }
 
+        /**
+         * Set a button configuration
+         *
+         * @see android.app.Dialog#BUTTON_POSITIVE
+         * @see android.app.Dialog#BUTTON_NEGATIVE
+         * @see android.app.Dialog#BUTTON_NEUTRAL
+         *
+         * @param whichButton       the button to set
+         * @param title             the title of the button
+         * @param listener          the button click listener
+         * @return                  self for chaining
+         */
         public Builder setButton(int whichButton, CharSequence title, DialogInterface.OnClickListener listener){
             delivery.mButtonMap.put(whichButton, new ButtonConfig(title, listener));
             return this;
         }
 
+        /**
+         * Set a button configuration
+         *
+         * @see android.app.Dialog#BUTTON_POSITIVE
+         * @see android.app.Dialog#BUTTON_NEGATIVE
+         * @see android.app.Dialog#BUTTON_NEUTRAL
+         *
+         * @param whichButton       the button to set
+         * @param titleResId        the title resource id of the title to set
+         * @param listener          the button click listener
+         * @return                  self for chaining
+         */
         public Builder setButton(int whichButton, int titleResId, DialogInterface.OnClickListener listener){
             delivery.mButtonMap.put(whichButton, new ButtonConfig(ctx.getString(titleResId), listener));
             return this;
         }
 
+        /**
+         * Set a buttons text color
+         *
+         * @see android.app.Dialog#BUTTON_POSITIVE
+         * @see android.app.Dialog#BUTTON_NEGATIVE
+         * @see android.app.Dialog#BUTTON_NEUTRAL
+         *
+         * @param whichButton       the button to set for
+         * @param color             the color of the button
+         * @return                  self for chaining
+         */
         public Builder setButtonTextColor(int whichButton, int color){
             delivery.mButtonTextColorMap.put(whichButton, ctx.getResources().getColor(color));
             return this;
         }
 
+        /**
+         * Set whether to show the keyboard on dialog showing
+         * if the style is applicable
+         *
+         * @param show      the flag
+         * @return          self for chaining
+         */
         public Builder showKeyboardOnDisplay(boolean show){
             delivery.mShowKeyboardOnDisplay = show;
             return this;
         }
 
+        /**
+         * Set whether or not the dialog is cancelable
+         *
+         * @param flag      the flag
+         * @return          self for chaining
+         */
         public Builder setCancelable(boolean flag){
             delivery.mCancelable = flag;
             return this;
         }
 
+        /**
+         * Set whether or not the dialog is canceled when the user touches outside
+         * of it.
+         *
+         * @param cancel        the flag
+         * @return              self for chaining
+         */
         public Builder setCanceledOnTouchOutside(boolean cancel){
             delivery.mCanceledOnTouchOutside = cancel;
             return this;
         }
 
+        /**
+         * Set the design of the dialog
+         *
+         * @see Design#HOLO_LIGHT
+         * @see Design#HOLO_DARK
+         * @see Design#MATERIAL_LIGHT
+         * @see Design#MATERIAL_DARK
+         *
+         * @param design        the design to set
+         * @return              self for chaining
+         */
         public Builder setDesign(Design design){
             delivery.mDesign = design;
             return this;
         }
 
+        /**
+         * Set the style of the dialog, leave null for an
+         * AlertDialog style. This essentially just defines the content in the dialog between
+         * the title and the buttons
+         *
+         * @param style     the dialog style
+         * @return          self for chaining
+         */
         public Builder setStyle(Style style){
             delivery.mStyle = style;
             delivery.mStyle.applyDesign(delivery.getDesign(), delivery.mThemeColor);
             return this;
         }
 
+        /**
+         * Build this delivery and deliver it
+         *
+         * This will create a single 'Ok' button with a dismiss listener
+         * if the style is left null and no buttons were set.
+         *
+         * @return  the built delivery
+         */
         public Delivery build(){
 
             // Ensure that simple alerts have an ok to dismiss button

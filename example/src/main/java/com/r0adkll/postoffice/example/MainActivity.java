@@ -2,17 +2,17 @@ package com.r0adkll.postoffice.example;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -20,7 +20,10 @@ import com.r0adkll.postoffice.PostOffice;
 import com.r0adkll.postoffice.model.Delivery;
 import com.r0adkll.postoffice.model.Design;
 import com.r0adkll.postoffice.styles.EditTextStyle;
+import com.r0adkll.postoffice.styles.ListStyle;
 import com.r0adkll.postoffice.styles.ProgressStyle;
+
+import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -32,6 +35,38 @@ public class MainActivity extends Activity implements View.OnClickListener{
     public static final String PREF_THEME = "pref_theme";
     public static final String PREF_COLOR = "pref_color";
 
+    public static final CharSequence[] LIST_CONTENT = new CharSequence[]{
+            "Batman",
+            "The Flash",
+            "Super Man",
+            "Jon Stewart",
+            "Wonder Woman",
+            "Black Canary",
+            "Red Tornado",
+            "Cpt. Atom",
+            "The Queston",
+            "Hawk Girl",
+            "Martian Man-Hunter",
+            "Green Arrow",
+            "Red Arrow",
+            "Robin",
+            "Nightwing",
+            "Aquaman",
+            "The Joker",
+            "Cpt. Cold",
+            "Cpt. Boomerang",
+            "Darkseid",
+            "Mongol",
+            "Two Face",
+            "The Penguin",
+            "Ra's al Ghul",
+            "Lex Luthor",
+            "Gorilla Grod",
+            "Shade",
+            "Bizarro",
+            "Ultra Humanite"
+    };
+
     @InjectView(R.id.alert_holo)            Button mAlertHolo;
     @InjectView(R.id.alert_material)        Button mAlertMaterial;
     @InjectView(R.id.edittext_holo)         Button mEdittextHolo;
@@ -40,7 +75,6 @@ public class MainActivity extends Activity implements View.OnClickListener{
     @InjectView(R.id.progress_material)     Button mProgressMaterial;
     @InjectView(R.id.list_holo)             Button mListHolo;
     @InjectView(R.id.list_material)         Button mListMaterial;
-    @InjectView(R.id.defaultDialog)         Button mDefault;
     @InjectView(R.id.theme_color)           View mThemeColor;
 
     private SharedPreferences mPrefs;
@@ -67,8 +101,6 @@ public class MainActivity extends Activity implements View.OnClickListener{
         mProgressMaterial.setOnClickListener(this);
         mListHolo.setOnClickListener(this);
         mListMaterial.setOnClickListener(this);
-        mDefault.setOnClickListener(this);
-
 
         mThemeColor.setBackgroundColor(getColor());
         mThemeColor.setOnClickListener(new View.OnClickListener() {
@@ -129,19 +161,6 @@ public class MainActivity extends Activity implements View.OnClickListener{
         Design mtrlDesign = isLight() ? Design.MATERIAL_LIGHT : Design.MATERIAL_DARK;
 
         switch (view.getId()){
-            case R.id.defaultDialog:
-                new AlertDialog.Builder(this)
-                        .setTitle(R.string.title)
-                        .setMessage(R.string.message)
-                        .setPositiveButton(R.string.action1, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(MainActivity.this, "Default Closed.", Toast.LENGTH_SHORT).show();
-                                dialog.dismiss();
-                            }
-                        }).show();
-                break;
-
             case R.id.alert_holo:
                 tag = "ALERT_HOLO";
 
@@ -252,12 +271,48 @@ public class MainActivity extends Activity implements View.OnClickListener{
             case R.id.progress_holo:
                 tag = "PROGRESS_HOLO";
                 delivery = PostOffice.newMail(this)
+                        .setTitle("Loading...")
                         .setThemeColor(getColor())
                         .setDesign(holoDesign)
-                        .setStyle(new ProgressStyle(this))
+                        .setCancelable(false)
+                        .setCanceledOnTouchOutside(false)
+                        .setStyle(new ProgressStyle.Builder(this)
+                                        .setSuffix("mb")
+                                        .setIndeterminate(true)
+                                        .setPercentageMode(true)
+                                        .build())
                         .setCancelable(true)
                         .setCanceledOnTouchOutside(true)
                         .build();
+
+                ProgressStyle style = (ProgressStyle) delivery.getStyle();
+                style.setIndeterminate(true);
+                style.setProgress(1);
+                style.setMax(1);
+
+//                final int max = 256;
+//                final Delivery finalDelivery = delivery;
+//                new Handler().post(new Runnable() {
+//
+//                    int progress = 0;
+//
+//                    @Override
+//                    public void run() {
+//
+//                        progress += 16;
+//
+//                        // Get Progress style
+//                        ProgressStyle style = (ProgressStyle) finalDelivery.getStyle();
+//                        style.setProgress(progress);
+//                        style.setMax(max);
+//
+//                        if(progress < max){
+//                            new Handler().postDelayed(this, 300);
+//                        }
+//
+//
+//                    }
+//                });
 
                 break;
             case R.id.progress_material:
@@ -265,20 +320,70 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 delivery = PostOffice.newMail(this)
                         .setThemeColor(getColor())
                         .setDesign(mtrlDesign)
-                        .setStyle(new ProgressStyle(this))
+                        .setStyle(new ProgressStyle.Builder(this)
+                                .setSuffix("mb")
+                                .setIndeterminate(false)
+                                .setCloseOnFinish(true)
+                                .build())
                         .setCancelable(true)
                         .setCanceledOnTouchOutside(true)
                         .build();
+
+                final int max2 = 256;
+                final Delivery finalDelivery2 = delivery;
+                new Handler().post(new Runnable() {
+
+                    int progress = 0;
+
+                    @Override
+                    public void run() {
+
+                        progress += 16;
+
+                        // Get Progress style
+                        ProgressStyle style = (ProgressStyle) finalDelivery2.getStyle();
+                        style.setProgress(progress);
+                        style.setMax(max2);
+
+                        if(progress < max2){
+                            new Handler().postDelayed(this, 300);
+                        }
+
+
+                    }
+                });
 
                 break;
 
             case R.id.list_holo:
                 tag = "LIST_HOLO";
 
+                ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, LIST_CONTENT);
+                delivery = PostOffice.newMail(this)
+                        .setTitle("DC Universe")
+                        .setThemeColor(getColor())
+                        .setDesign(holoDesign)
+                        .setStyle(new ListStyle.Builder(this)
+                                .setDividerHeight(2)
+                                .setOnItemAcceptedListener(new ListStyle.OnItemAcceptedListener<CharSequence>() {
+                                    @Override
+                                    public void onItemAccepted(CharSequence item, int position) {
+                                        Toast.makeText(MainActivity.this, String.format("%s is the best DC Character", item), Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .build(adapter))
+                        .build();
+
+
                 break;
             case R.id.list_material:
                 tag = "LIST_MATERIAL";
-
+                delivery = PostOffice.newSimpleListMail(this, "DC Universe", mtrlDesign, LIST_CONTENT, new ListStyle.OnItemAcceptedListener<CharSequence>() {
+                    @Override
+                    public void onItemAccepted(CharSequence item, int position) {
+                        Toast.makeText(MainActivity.this, String.format("%s is the bestest DC Character", item), Toast.LENGTH_SHORT).show();
+                    }
+                });
                 break;
         }
 

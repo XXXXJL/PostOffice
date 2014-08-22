@@ -103,6 +103,9 @@ public class EditTextStyle implements Style {
         }
     }
 
+    @Override
+    public void onDialogShow(DialogInterface dialog) {}
+
     /**
      * Get the core {@link android.widget.EditText} widget for this style
      * to apply special/custom attributes to
@@ -139,47 +142,101 @@ public class EditTextStyle implements Style {
             style = new EditTextStyle(ctx);
         }
 
+        /**
+         * Set the EditText fields text content
+         *
+         * @param text      the text content to fill with
+         * @return          self for chaining
+         */
         public Builder setText(CharSequence text){
             style.getEditTextView().setText(text);
             return this;
         }
 
+        /**
+         * Set the EditText fields hint text content
+         *
+         * @param hint      the text fields hint to display
+         * @return          self for chaining
+         */
         public Builder setHint(CharSequence hint){
             style.getEditTextView().setHint(hint);
             return this;
         }
 
+        /**
+         * Set the text color of the text field to display
+         *
+         * @param color     the text color
+         * @return          self for chaining
+         */
         public Builder setTextColor(int color){
             style.getEditTextView().setTextColor(color);
             return this;
         }
 
+        /**
+         * Set the hint text color of the input field
+         *
+         * @param hintColor     the hint text color
+         * @return              self for chaining
+         */
         public Builder setHintColor(int hintColor){
             style.getEditTextView().setHintTextColor(hintColor);
             return this;
         }
 
+        /**
+         * Add a text change listener for when the user changes the text in
+         * the text field.
+         *
+         * @param watcher       the text watcher to observe input changes
+         * @return              self for chaining
+         */
         public Builder addTextWatcher(TextWatcher watcher){
             style.getEditTextView().addTextChangedListener(watcher);
             return this;
         }
 
+        /**
+         * Set the input fields input type (i.e. email, caps, numbers, etc)
+         *
+         * @param type      the input type to set
+         * @return          self for chaining
+         */
         public Builder setInputType(int type){
             style.getEditTextView().setInputType(type);
             return this;
         }
 
+        /**
+         * Set the text acceptance listener that gets called when the
+         * user presses the POSITIVE_BUTTON on the dialog to accept the
+         * text input, and this is the way to listen for that input.
+         *
+         * @param listener      the acceptance listener
+         * @return              self for chaining
+         */
         public Builder setOnTextAcceptedListener(OnTextAcceptedListener listener){
             style.mListener = listener;
             return this;
         }
 
+        /**
+         * Build the input field style
+         *
+         * @return      the built EditTextStyle style
+         */
         public EditTextStyle build(){
             return style;
         }
 
     }
 
+    /**
+     * The text acceptance listener that gets called when the user accepts
+     * the inputed text in this style
+     */
     public static interface OnTextAcceptedListener{
         public void onAccepted(String text);
     }
