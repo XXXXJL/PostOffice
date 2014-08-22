@@ -1,4 +1,5 @@
-# PostOffice
+# PostOffice 
+**Version 1.0.0**
 
 This is a library for easily constructing Holo and Material Design Dialogs.
 There are screenshots of my progress in the /images folder as this is a work in progress.
@@ -87,7 +88,7 @@ Here is the list of delivery interface methods
 ## Implementing
 Add this line to your gradle dependencies
 
-	compile 'com.r0adkll:postoffice:+'
+	compile 'com.r0adkll:postoffice:<current_version>'
 
 ## Author
 
