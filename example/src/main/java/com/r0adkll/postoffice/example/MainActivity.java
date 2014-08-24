@@ -290,30 +290,6 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 style.setProgress(1);
                 style.setMax(1);
 
-//                final int max = 256;
-//                final Delivery finalDelivery = delivery;
-//                new Handler().post(new Runnable() {
-//
-//                    int progress = 0;
-//
-//                    @Override
-//                    public void run() {
-//
-//                        progress += 16;
-//
-//                        // Get Progress style
-//                        ProgressStyle style = (ProgressStyle) finalDelivery.getStyle();
-//                        style.setProgress(progress);
-//                        style.setMax(max);
-//
-//                        if(progress < max){
-//                            new Handler().postDelayed(this, 300);
-//                        }
-//
-//
-//                    }
-//                });
-
                 break;
             case R.id.progress_material:
                 tag = "PROGRESS_MATERIAL";

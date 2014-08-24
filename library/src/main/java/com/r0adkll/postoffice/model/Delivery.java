@@ -249,6 +249,11 @@ public class Delivery {
         return this;
     }
 
+    public void updateDesign(Design design){
+        mDesign = design;
+        if(mStyle != null) mStyle.applyDesign(mDesign, mThemeColor);
+    }
+
     /**
      * Get the current Mail style (this will be one of hte subclasses)
      *
@@ -553,6 +558,7 @@ public class Delivery {
          */
         public Builder setDesign(Design design){
             delivery.mDesign = design;
+            if(delivery.mStyle != null) delivery.getStyle().applyDesign(design, delivery.mThemeColor);
             return this;
         }
 

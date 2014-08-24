@@ -15,7 +15,6 @@
       </GradleProjectSettings>
     </option>
     <option name="gradleVmOptions" value="-Xms512m -Xmx4096m -XX:MaxPermSize=512m" />
-    <option name="offlineWork" value="true" />
   </component>
 </project>
 
