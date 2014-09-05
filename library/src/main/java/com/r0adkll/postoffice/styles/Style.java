@@ -37,17 +37,10 @@ public interface Style {
 
     /**
      * Called when the dialog this style is attached to is shown
-     *
-     * @param dialog        the dialog interface
-     */
-    public void onDialogShow(DialogInterface dialog);
-
-    /**
-     * Called when the dialog this style is attached to is shown
      * but will also return the dialog object itself for further manipulation
      *
      * @param dialog        the dialog being shown
      */
-    public abstract void onDialogShow(Dialog dialog);
+    public void onDialogShow(Dialog dialog);
 
 }

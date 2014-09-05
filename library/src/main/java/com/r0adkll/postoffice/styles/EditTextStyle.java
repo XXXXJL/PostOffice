@@ -104,7 +104,7 @@ public class EditTextStyle implements Style {
     }
 
     @Override
-    public void onDialogShow(DialogInterface dialog) {}
+    public void onDialogShow(Dialog dialog) {}
 
     /**
      * Get the core {@link android.widget.EditText} widget for this style

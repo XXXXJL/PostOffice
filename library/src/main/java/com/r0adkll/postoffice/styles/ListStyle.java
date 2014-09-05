@@ -89,7 +89,7 @@ public class ListStyle<T> implements Style, AdapterView.OnItemClickListener {
     }
 
     @Override
-    public void onDialogShow(DialogInterface dialog) {
+    public void onDialogShow(Dialog dialog) {
         mDialogInterface = dialog;
     }
 

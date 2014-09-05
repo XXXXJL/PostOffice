@@ -1,5 +1,6 @@
 package com.r0adkll.postoffice.styles;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -111,7 +112,7 @@ public class ProgressStyle implements Style {
     public void onButtonClicked(int which, DialogInterface dialogInterface) {}
 
     @Override
-    public void onDialogShow(DialogInterface dialog) {
+    public void onDialogShow(Dialog dialog) {
         mDialogInterface = dialog;
     }
 

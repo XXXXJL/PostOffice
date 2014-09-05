@@ -168,7 +168,6 @@ public class Mail extends DialogFragment {
             @Override
             public void onShow(DialogInterface dialog) {
                 if(mConstruct.getOnShowListener() != null) mConstruct.getOnShowListener().onShow(dialog);
-                if(mConstruct.getStyle() != null) mConstruct.getStyle().onDialogShow(dialog);
                 if(mConstruct.getStyle() != null) mConstruct.getStyle().onDialogShow(getDialog());
 
                 if(mConstruct.isShowKeyboardOnDisplay()){
@@ -264,6 +263,31 @@ public class Mail extends DialogFragment {
      */
     public void setConfiguration(Delivery delivery){
         mConstruct = delivery;
+    }
+
+    /**
+     * Modify the title of the dialog no matter what style it is
+     *
+     * @param title     the title to update with
+     */
+    public void setTitle(CharSequence title){
+        if(mConstruct != null && !mConstruct.getDesign().isMaterial()){
+            // Modify the dialog's title element
+            getDialog().setTitle(title);
+        }else{
+            if(mTitle != null){
+                mTitle.setText(title);
+            }
+        }
+    }
+
+    /**
+     * Modify the title of the dialog no matter what style is being used
+     *
+     * @param titleResId        the resource id of the string value to use
+     */
+    public void setTitle(int titleResId){
+        setTitle(getString(titleResId));
     }
 
     /**
