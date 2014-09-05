@@ -1,5 +1,6 @@
 package com.r0adkll.postoffice.styles;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.view.View;
 
@@ -40,5 +41,13 @@ public interface Style {
      * @param dialog        the dialog interface
      */
     public void onDialogShow(DialogInterface dialog);
+
+    /**
+     * Called when the dialog this style is attached to is shown
+     * but will also return the dialog object itself for further manipulation
+     *
+     * @param dialog        the dialog being shown
+     */
+    public abstract void onDialogShow(Dialog dialog);
 
 }

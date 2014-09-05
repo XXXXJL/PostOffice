@@ -169,6 +169,7 @@ public class Mail extends DialogFragment {
             public void onShow(DialogInterface dialog) {
                 if(mConstruct.getOnShowListener() != null) mConstruct.getOnShowListener().onShow(dialog);
                 if(mConstruct.getStyle() != null) mConstruct.getStyle().onDialogShow(dialog);
+                if(mConstruct.getStyle() != null) mConstruct.getStyle().onDialogShow(getDialog());
 
                 if(mConstruct.isShowKeyboardOnDisplay()){
                     if(mConstruct.getStyle() instanceof EditTextStyle){

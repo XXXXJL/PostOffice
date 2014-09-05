@@ -249,6 +249,10 @@ public class Delivery {
         return this;
     }
 
+    /**
+     * Update the design of this delivery
+     * @param design
+     */
     public void updateDesign(Design design){
         mDesign = design;
         if(mStyle != null) mStyle.applyDesign(mDesign, mThemeColor);
@@ -261,6 +265,15 @@ public class Delivery {
      */
     public Style getStyle(){
         return mStyle;
+    }
+
+    /**
+     * Get the active outgoing mail (dialog) reference if there is one
+     *
+     * @return      the active outgoing mail, or null
+     */
+    public Mail getMail(){
+        return mActiveMail;
     }
 
     /**
@@ -563,7 +576,7 @@ public class Delivery {
         }
 
         /**
-         * Set the style of the dialog, leave null for an
+         * Set the style of the dialog, leavde null for an
          * AlertDialog style. This essentially just defines the content in the dialog between
          * the title and the buttons
          *
