@@ -92,7 +92,7 @@ Here is the list of delivery interface methods
 ## Implementing
 Add this line to your gradle dependencies
 
-	compile 'com.r0adkll:postoffice:1.0.0'
+	compile 'com.r0adkll:postoffice:1.0.1'
 
 ## Author
 
