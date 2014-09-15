@@ -8,7 +8,6 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.StateListDrawable;
 import android.os.Handler;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -39,6 +38,7 @@ public class ProgressStyle implements Style {
     private CharSequence mSuffix;
     private boolean mIsCloseOnFinish = false;
     private boolean mIsPercentageMode = false;
+    private boolean mIsHorizontal = false;
 
     private DialogInterface mDialogInterface;
 
@@ -252,6 +252,17 @@ public class ProgressStyle implements Style {
          */
         public Builder setPercentageMode(boolean value){
             style.mIsPercentageMode = value;
+            return this;
+        }
+
+        /**
+         * This this progress's indeterminate style to horizontal mode
+         *
+         * @param value     true for horizontal indeterminate mode
+         * @return          self for chaining
+         */
+        public Builder setHorizontalMode(boolean value){
+            style.mIsHorizontal = value;
             return this;
         }
 

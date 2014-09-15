@@ -1,5 +1,5 @@
 # PostOffice 
-[**Version 1.0.1**](id:version)
+[**Version 1.0.2**](id:version)
 
 This is a library for easily constructing Holo and Material Design Dialogs.
 There are screenshots of my progress in the /images folder as this is a work in progress.
@@ -13,6 +13,7 @@ _OR_
 Call one of the simpler quick call items;
 	
 	PostOffice.newAlertMail(Context, Title, Message)
+	PostOffice.newAlertMail(Context, Title, Message, AlertHandler)
 	PostOffice.newEditTextMail(Context, Title, Hint, InputType, OnTextAcceptedListener)
 	PostOffice.newProgressMail(Context, Title, Suffix, Indeterminate);
 	PostOffice.newSimpleListMail(Context, Title, Design, Contents[], OnItemAcceptedListener<T>)
@@ -75,28 +76,50 @@ Here is the list of delivery interface methods
 	.setOnShowListener(DialogInterface.OnShowListener)
 	.getStyle()	
 	
-	.show(FragmentManager manager, String tag)            // Create DialogFragment instance
-	.show(FragmentTransaction transaction, String tag)    // Create DialogFragment instance
-	.show()									               // Create AlertDialog instance
+	.show(FragmentManager manager, String tag)
+	.show(FragmentManager manager)
+	.show(FragmentTransaction transaction, String tag)
+    .show(FragmentTransaction transaction)
 	.dismiss()
 	
 ## Example Usage
 
 	PostOffice.newAlertMail(ctx, R.string.title, R.string.message)
 		      .show(getFragmentManager(), null);
+		      
+or
+		      
+	PostOffice.newMail(ctx)
+			  .setTitle("Some awesome title")
+			  .setMessage("Something cool just happened, check it out.")
+			  .setIcon(R.drawable.ic_launcher)
+			  .setThemeColor(R.color.app_color)
+			  .setDesign(Design.MATERIAL_LIGHT)
+			  .build()
+			  .show(getFragmentManager());
+			  
 		    
+## Screenshots
 		    
-![Home](images/example_home.png)  ![Alert Holo](images/example_alert_holo.png)
-![Alert Mtrl](images/example_alert_material_design.png)  ![EditText](images/example_edittext_material.png)
+![Home](images/po_1.png)  ![Home Dark](images/po_8.png)
+![Alert Holo](images/po_2.png)  ![Alert Material](images/po_3.png)  
+![EditText Material](images/po_4.png)  ![Progress Holo](images/po_5.png)  
+![List Holo](images/po_6.png)  ![List Mtrl](images/po_7.png)
 	
 ## Implementing
 Add this line to your gradle dependencies
 
-	compile 'com.r0adkll:postoffice:1.0.1'
+	compile 'com.r0adkll:postoffice:1.0.2'
 
 ## Author
 
 -	Drew Heavner - [r0adkll](http://r0adkll.com)
+
+## Attribution
+
+-	[RippleView](https://github.com/siriscac/RippleView) - Muthuramakrishnan - [siriscac@gmail.com](mailto:siriscac@gmail.com)
+	-	Used to produce the ripple affect on Material dialogs
+
 
 ## License
 

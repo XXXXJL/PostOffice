@@ -23,7 +23,7 @@
         <item name="android:textColor">@color/material_light_dialog_button_default</item>
         <item name="android:alpha">.87</item>
         <item name="android:textAllCaps">true</item>
-        <item name="android:background">@drawable/material_light_button_selector</item>
+        <!--<item name="android:background">@drawable/material_light_button_selector</item>-->
     </style>
 
 
@@ -49,7 +49,7 @@
         <item name="android:textColor">@color/material_dark_dialog_button_default</item>
         <item name="android:alpha">.87</item>
         <item name="android:textAllCaps">true</item>
-        <item name="android:background">@drawable/material_dark_button_selector</item>
+        <!--<item name="android:background">@drawable/material_dark_button_selector</item>-->
     </style>
 
     <!--

@@ -1,17 +1,17 @@
 package com.r0adkll.postoffice;
 
+import android.app.Dialog;
 import android.content.Context;
-import android.os.Build;
+import android.content.DialogInterface;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
+import com.r0adkll.postoffice.handlers.AlertHandler;
 import com.r0adkll.postoffice.model.Delivery;
 import com.r0adkll.postoffice.model.Design;
 import com.r0adkll.postoffice.model.Stamp;
 import com.r0adkll.postoffice.styles.EditTextStyle;
 import com.r0adkll.postoffice.styles.ListStyle;
 import com.r0adkll.postoffice.styles.ProgressStyle;
-import com.r0adkll.postoffice.ui.Mail;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -58,7 +58,6 @@ public class PostOffice {
     public void lick(Stamp stamp){
         defaultStamp = stamp;
     }
-
 
     /**
      * Start generating a new 'Mail' object to display a new
@@ -112,6 +111,182 @@ public class PostOffice {
                 .setMessage(message);
 
         // Return the delivery
+        return builder.build();
+    }
+
+    /**
+     * Create a new AlertDialog 'Mail' delivery to display
+     * with text resources
+     *
+     * @param ctx       the application context
+     * @param title     the title string resource id
+     * @param message   the message string
+     * @return          the new Delivery
+     */
+    public static Delivery newAlertMail(@NotNull Context ctx, @NotNull Integer title, @NotNull CharSequence message){
+        // Create new Delivery
+        Delivery.Builder builder = newMail(ctx)
+                .setTitle(title)
+                .setMessage(message);
+
+        return builder.build();
+    }
+
+    /**
+     * Create a new AlertDialog 'Mail' delivery to display
+     * with text resources
+     *
+     * @param ctx       the application context
+     * @param title     the title string
+     * @param message   the message string resource id
+     * @return          the new Delivery
+     */
+    public static Delivery newAlertMail(@NotNull Context ctx, @NotNull CharSequence title, @NotNull Integer message){
+        // Create new Delivery
+        Delivery.Builder builder = newMail(ctx)
+                .setTitle(title)
+                .setMessage(message);
+
+        return builder.build();
+    }
+
+    /**
+     * Create an alert dialog 'Mail' delivery that provides the user with a 'Yes' or 'No' choice to
+     *
+     * @param ctx       the application context
+     * @param title     the dialog title
+     * @param message   the dialog message
+     * @param handler   the choice handler
+     * @return          the alert choice handler
+     */
+    public static Delivery newAlertMail(@NotNull Context ctx, @NotNull CharSequence title, @NotNull CharSequence message,
+                                        @NotNull final AlertHandler handler){
+
+        // Compose the delivery
+        Delivery.Builder builder = newMail(ctx)
+                .setTitle(title)
+                .setMessage(message)
+                .setButton(Dialog.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        handler.onAccept();
+                    }
+                })
+                .setButton(Dialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        handler.onDecline();
+                    }
+                });
+
+        // Build the delivery
+        return builder.build();
+    }
+
+    /**
+     * Create an alert dialog 'Mail' delivery that provides the user with a 'Yes' or 'No' choice to
+     *
+     * @param ctx       the application context
+     * @param title     the dialog title
+     * @param message   the dialog message
+     * @param handler   the choice handler
+     * @return          the alert choice handler
+     */
+    public static Delivery newAlertMail(@NotNull Context ctx, @NotNull Integer title, @NotNull Integer message,
+                                        @NotNull final AlertHandler handler){
+
+        // Compose the delivery
+        Delivery.Builder builder = newMail(ctx)
+                .setTitle(title)
+                .setMessage(message)
+                .setButton(Dialog.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        handler.onAccept();
+                    }
+                })
+                .setButton(Dialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        handler.onDecline();
+                    }
+                });
+
+        // Build the delivery
+        return builder.build();
+    }
+
+    /**
+     * Create an alert dialog 'Mail' delivery that provides the user with a 'Yes' or 'No' choice to
+     *
+     * @param ctx       the application context
+     * @param title     the dialog title
+     * @param message   the dialog message
+     * @param handler   the choice handler
+     * @return          the alert choice handler
+     */
+    public static Delivery newAlertMail(@NotNull Context ctx, @NotNull Integer title, @NotNull CharSequence message,
+                                        @NotNull final AlertHandler handler){
+
+        // Compose the delivery
+        Delivery.Builder builder = newMail(ctx)
+                .setTitle(title)
+                .setMessage(message)
+                .setButton(Dialog.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        handler.onAccept();
+                    }
+                })
+                .setButton(Dialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        handler.onDecline();
+                    }
+                });
+
+        // Build the delivery
+        return builder.build();
+    }
+
+    /**
+     * Create an alert dialog 'Mail' delivery that provides the user with a 'Yes' or 'No' choice to
+     *
+     * @param ctx       the application context
+     * @param title     the dialog title
+     * @param message   the dialog message
+     * @param handler   the choice handler
+     * @return          the alert choice handler
+     */
+    public static Delivery newAlertMail(@NotNull Context ctx, @NotNull CharSequence title, @NotNull Integer message,
+                                        @NotNull final AlertHandler handler){
+
+        // Compose the delivery
+        Delivery.Builder builder = newMail(ctx)
+                .setTitle(title)
+                .setMessage(message)
+                .setButton(Dialog.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        handler.onAccept();
+                    }
+                })
+                .setButton(Dialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        handler.onDecline();
+                    }
+                });
+
+        // Build the delivery
         return builder.build();
     }
 
@@ -260,6 +435,7 @@ public class PostOffice {
                    .showKeyboardOnDisplay(defaults.isShowKeyboardOnDisplay());
         }
     }
+
 
 
 }

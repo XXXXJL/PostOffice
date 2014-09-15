@@ -323,14 +323,29 @@ public class Delivery {
     }
 
     /**
-     * Show/Create an {@link android.app.AlertDialog}
+     * Show/Create a DialogFragment on the provided FragmentManager with
+     * the given tag.
      *
-     * @see android.app.Dialog#show()
+     * @see android.app.DialogFragment#show(android.app.FragmentManager, String)
+     * @param manager       the fragment manager used to add the Dialog into the UI
      */
-    public void show(){
-        // Generate the appropriate AlertDialog
+    public void show(FragmentManager manager){
+        // Generate the appropriate DialogFragment
+        mActiveMail = generateDialogFragment();
+        mActiveMail.show(manager, null);
+    }
 
-
+    /**
+     * Show/Create a DialogFragment on the provided FragmentTransaction
+     * to be executed and shown.
+     *
+     * @see android.app.DialogFragment#show(android.app.FragmentTransaction, String)
+     * @param transaction   the fragment transaction used to show the dialog
+     */
+    public void show(FragmentTransaction transaction){
+        // Generate the appropriate DialogFragment
+        mActiveMail = generateDialogFragment();
+        mActiveMail.show(transaction, null);
     }
 
     /**

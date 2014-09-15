@@ -26,8 +26,8 @@ import com.ftinc.fontloader.Types;
 import com.r0adkll.postoffice.R;
 import com.r0adkll.postoffice.model.Delivery;
 import com.r0adkll.postoffice.styles.EditTextStyle;
-import com.r0adkll.postoffice.styles.ProgressStyle;
 import com.r0adkll.postoffice.styles.Style;
+import com.r0adkll.postoffice.widgets.RippleView;
 
 /**
  * Project: PostOffice
@@ -122,16 +122,13 @@ public class Mail extends DialogFragment {
 
                     // Pull button Color
                     int textColor = mConstruct.getButtonTextColor(key);
-                    Spannable title = new SpannableString(cfg.title);
-                    if (textColor != 0) {
-                        title.setSpan(new ForegroundColorSpan(textColor), 0, cfg.title.length(), 0);
-                    }
 
                     // Create and add buttons (in order) to the button container
-                    TextView button = (TextView)getActivity().getLayoutInflater().inflate(mConstruct.getDesign().isLight() ? R.layout.material_light_dialog_button : R.layout.material_dark_dialog_button, null, false);
+                    RippleView button = (RippleView)getActivity().getLayoutInflater().inflate(mConstruct.getDesign().isLight() ? R.layout.material_light_dialog_button : R.layout.material_dark_dialog_button, null, false);
                     FontLoader.applyTypeface(button, Types.ROBOTO_MEDIUM);
                     button.setId(key);
                     button.setText(cfg.title);
+                    if(textColor != 0) button.setTextColor(textColor);
                     button.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

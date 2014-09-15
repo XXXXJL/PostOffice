@@ -8,5 +8,7 @@
     <string name="title">Alert holo title</string>
     <string name="action1">Ok</string>
     <string name="action2">cancel</string>
+    <string name="mtrl_title">Edit Text Material Design</string>
+    <string name="mtrl_alert_title">Material holo title</string>
 
 </resources>

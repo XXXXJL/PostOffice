@@ -23,8 +23,6 @@ import com.r0adkll.postoffice.styles.EditTextStyle;
 import com.r0adkll.postoffice.styles.ListStyle;
 import com.r0adkll.postoffice.styles.ProgressStyle;
 
-import java.util.ArrayList;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -180,14 +178,13 @@ public class MainActivity extends Activity implements View.OnClickListener{
                         })
                         .build();
 
-
                 break;
             case R.id.alert_material:
                 tag = "ALERT_MATERIAL";
 
                 // Create and show holo alert style
                 delivery = PostOffice.newMail(this)
-                        .setTitle(R.string.title)
+                        .setTitle(R.string.mtrl_alert_title)
                         .setThemeColor(getColor())
                         .setMessage(R.string.message)
                         .setDesign(mtrlDesign)
@@ -239,10 +236,11 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 tag = "EDITTEXT_MATERIAL";
 
                 delivery = PostOffice.newMail(this)
-                        .setTitle(R.string.title)
+                        .setTitle(R.string.mtrl_title)
                         .setThemeColor(getColor())
                         .setDesign(mtrlDesign)
                         .showKeyboardOnDisplay(true)
+                        .setButtonTextColor(Dialog.BUTTON_POSITIVE, R.color.blue_500)
                         .setButton(Dialog.BUTTON_POSITIVE, R.string.action1, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

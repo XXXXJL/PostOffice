@@ -1,3 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<TextView style="@style/Widget.PostOffice.Material.Light.Dialog.Button" />
+<com.r0adkll.postoffice.widgets.RippleView
+    xmlns:ripple="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.PostOffice.Material.Light.Dialog.Button"
+    ripple:alphaFactor="0.7"
+    ripple:rippleColor="@color/ripple_material_light"
+    ripple:hover="true"
+    />
