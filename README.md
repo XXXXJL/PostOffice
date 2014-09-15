@@ -105,6 +105,10 @@ or
 ![Alert Holo](images/po_2.png)  ![Alert Material](images/po_3.png)  
 ![EditText Material](images/po_4.png)  ![Progress Holo](images/po_5.png)  
 ![List Holo](images/po_6.png)  ![List Mtrl](images/po_7.png)
+
+## Example
+
+-	Download the example to play with: [example.apk](https://github.com/r0adkll/PostOffice/raw/master/example.apk)
 	
 ## Implementing
 Add this line to your gradle dependencies
