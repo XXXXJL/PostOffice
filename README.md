@@ -106,6 +106,13 @@ or
 ![EditText Material](images/po_4.png)  ![Progress Holo](images/po_5.png)  
 ![List Holo](images/po_6.png)  ![List Mtrl](images/po_7.png)
 
+## Going Forward
+Here is a list of features I will add or look into adding in the near future. If you have any features you would like to add feel free to submit a Pull request or email me.  
+
+-	Support for Support FragmentManager
+-	Update the text tracking and kerning for Material Design dialogs to become full spec
+-	Add a 100ms delay to dismissing Material design dialogs so the user can see the ripple effect
+
 ## Example
 
 -	Download the example to play with: [example.apk](https://github.com/r0adkll/PostOffice/raw/master/example.apk)
