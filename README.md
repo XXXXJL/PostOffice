@@ -1,5 +1,6 @@
 # PostOffice 
-[**Version 1.0.3**](id:version)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-PostOffice-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1024)  
+[**Version 1.0.3**](id:version)  
 
 This is a library for easily constructing Holo and Material Design Dialogs.
 There are screenshots of my progress in the /images folder as this is a work in progress.
