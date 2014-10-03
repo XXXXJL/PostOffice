@@ -1,5 +1,5 @@
 # PostOffice 
-[**Version 1.0.2**](id:version)
+[**Version 1.0.3**](id:version)
 
 This is a library for easily constructing Holo and Material Design Dialogs.
 There are screenshots of my progress in the /images folder as this is a work in progress.
@@ -80,7 +80,17 @@ Here is the list of delivery interface methods
 	.show(FragmentManager manager)
 	.show(FragmentTransaction transaction, String tag)
     .show(FragmentTransaction transaction)
+    
+    .show(android.support.v4.app.FragmentManager, String tag)
+    .show(android.support.v4.app.FragmentManager)
+    .show(android.support.v4.app.FragmentTransaction, String tag)
+    .show(android.support.v4.app.FragmentTransaction)
+    
+    .getMail()
+    .getSupportMail()
+    
 	.dismiss()
+	.dismissAllowStateLoss()
 	
 ## Example Usage
 
@@ -109,9 +119,9 @@ or
 ## Going Forward
 Here is a list of features I will add or look into adding in the near future. If you have any features you would like to add feel free to submit a Pull request or email me.  
 
--	Support for Support FragmentManager
--	Update the text tracking and kerning for Material Design dialogs to become full spec
--	Add a 100ms delay to dismissing Material design dialogs so the user can see the ripple effect
+-	**[DONE]** Support for Support FragmentManager
+-	**[DONE]** Update the text tracking and kerning for Material Design dialogs to become full spec
+-	**[DONE]** Add a delay to dismissing Material design dialogs so the user can see the ripple effect
 
 ## Example
 
@@ -120,7 +130,7 @@ Here is a list of features I will add or look into adding in the near future. If
 ## Implementing
 Add this line to your gradle dependencies
 
-	compile 'com.r0adkll:postoffice:1.0.2'
+	compile 'com.r0adkll:postoffice:1.0.3'
 
 ## Author
 

@@ -2,18 +2,16 @@ package com.r0adkll.postoffice.ui;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.v4.app.DialogFragment;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ScaleXSpan;
-import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -39,7 +37,7 @@ import com.r0adkll.postoffice.widgets.RippleView;
  * Package: com.r0adkll.postoffice.ui
  * Created by drew.heavner on 8/20/14.
  */
-public class Mail extends DialogFragment {
+public class SupportMail extends DialogFragment {
 
     /**********************************************************
      *
@@ -52,8 +50,8 @@ public class Mail extends DialogFragment {
      *
      * @return              the created/inflated dialog fragment
      */
-    public static Mail createInstance(){
-        Mail mail = new Mail();
+    public static SupportMail createInstance(){
+        SupportMail mail = new SupportMail();
         return mail;
     }
 
@@ -81,7 +79,7 @@ public class Mail extends DialogFragment {
     /**
      * Empty constructor
      */
-    public Mail(){}
+    public SupportMail(){}
 
     /**********************************************************
      *
@@ -110,7 +108,6 @@ public class Mail extends DialogFragment {
                     mMessage.setText(applyKerning(mConstruct.getMessage(), 0.03f));
                 else
                     mContentFrame.removeView(mMessage);
-
 
                 if (mConstruct.getDesign().isMaterial()) {
                     FontLoader.applyTypeface(mTitle, Types.ROBOTO_MEDIUM);

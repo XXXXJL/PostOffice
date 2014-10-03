@@ -1,13 +1,13 @@
 package com.r0adkll.postoffice.example;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,7 +27,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 
-public class MainActivity extends Activity implements View.OnClickListener{
+public class SupportMainActivity extends FragmentActivity implements View.OnClickListener{
 
     public static final String PREF_NAME = "PostOfficeExample.prefs";
     public static final String PREF_THEME = "pref_theme";
@@ -104,7 +104,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         mThemeColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HSVColorPickerDialog diag = new HSVColorPickerDialog(MainActivity.this, getColor(), new HSVColorPickerDialog.OnColorSelectedListener() {
+                HSVColorPickerDialog diag = new HSVColorPickerDialog(SupportMainActivity.this, getColor(), new HSVColorPickerDialog.OnColorSelectedListener() {
                     @Override
                     public void colorSelected(Integer color) {
                         mPrefs.edit().putInt(PREF_COLOR, color).commit();
@@ -131,7 +131,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 mPrefs.edit().putBoolean(PREF_THEME, !isLight()).commit();
 
                 // Restart this activity
-                Intent restart = new Intent(this, MainActivity.class);
+                Intent restart = new Intent(this, SupportMainActivity.class);
                 restart.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_ANIMATION);
 
                 overridePendingTransition(0, 0);
@@ -172,7 +172,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 // Do something with teh clicks
-                                Toast.makeText(MainActivity.this, "Alert Holo Closed.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SupportMainActivity.this, "Alert Holo Closed.", Toast.LENGTH_SHORT).show();
                                 dialog.dismiss();
                             }
                         })
@@ -188,13 +188,12 @@ public class MainActivity extends Activity implements View.OnClickListener{
                         .setThemeColor(getColor())
                         .setMessage(R.string.message)
                         .setDesign(mtrlDesign)
-                        .setCanceledOnTouchOutside(true)
-                        .setCancelable(true)
+                        .setCanceledOnTouchOutside(false)
                         .setButton(Dialog.BUTTON_POSITIVE, R.string.action1, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 // Do something with teh clicks
-                                Toast.makeText(MainActivity.this, "Alert Material Closed.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SupportMainActivity.this, "Alert Material Closed.", Toast.LENGTH_SHORT).show();
                                 dialog.dismiss();
                             }
                         })
@@ -227,7 +226,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
                                         .setOnTextAcceptedListener(new EditTextStyle.OnTextAcceptedListener() {
                                             @Override
                                             public void onAccepted(String text) {
-                                                Toast.makeText(MainActivity.this, "Text was accepted: " + text, Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(SupportMainActivity.this, "Text was accepted: " + text, Toast.LENGTH_SHORT).show();
                                             }
                                         }).build())
                         .build();
@@ -260,7 +259,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
                                 .setOnTextAcceptedListener(new EditTextStyle.OnTextAcceptedListener() {
                                     @Override
                                     public void onAccepted(String text) {
-                                        Toast.makeText(MainActivity.this, "Text was accepted: " + text, Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(SupportMainActivity.this, "Text was accepted: " + text, Toast.LENGTH_SHORT).show();
                                     }
                                 }).build())
                         .build();
@@ -343,7 +342,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
                                 .setOnItemAcceptedListener(new ListStyle.OnItemAcceptedListener<CharSequence>() {
                                     @Override
                                     public void onItemAccepted(CharSequence item, int position) {
-                                        Toast.makeText(MainActivity.this, String.format("%s is the best DC Character", item), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(SupportMainActivity.this, String.format("%s is the best DC Character", item), Toast.LENGTH_SHORT).show();
                                     }
                                 })
                                 .build(adapter))
@@ -356,7 +355,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 delivery = PostOffice.newSimpleListMail(this, "DC Universe", mtrlDesign, LIST_CONTENT, new ListStyle.OnItemAcceptedListener<CharSequence>() {
                     @Override
                     public void onItemAccepted(CharSequence item, int position) {
-                        Toast.makeText(MainActivity.this, String.format("%s is the bestest DC Character", item), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SupportMainActivity.this, String.format("%s is the bestest DC Character", item), Toast.LENGTH_SHORT).show();
                     }
                 });
                 break;
@@ -364,7 +363,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
         // Show the delivery
         if(delivery != null)
-            delivery.show(getFragmentManager(), tag);
+            delivery.show(getSupportFragmentManager(), tag);
     }
 
     /**

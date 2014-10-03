@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/background_material_light"
-    android:minWidth="300dp"
     >
 
     <TextView

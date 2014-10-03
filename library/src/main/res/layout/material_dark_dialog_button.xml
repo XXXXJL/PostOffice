@@ -5,5 +5,7 @@
     style="@style/Widget.PostOffice.Material.Dark.Dialog.Button"
     ripple:alphaFactor="0.7"
     ripple:rippleColor="@color/ripple_material_dark"
+    ripple:startRadius="16dp"
+    ripple:duration="250"
     ripple:hover="true"
     />

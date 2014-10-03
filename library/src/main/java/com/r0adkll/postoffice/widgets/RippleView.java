@@ -16,22 +16,37 @@ package com.r0adkll.postoffice.widgets;
  * limitations under the License.
  */
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.*;
 import android.util.AttributeSet;
-import android.util.Log;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
-
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.ObjectAnimator;
+import com.nineoldandroids.view.ViewHelper;
 import com.r0adkll.postoffice.R;
 
 @SuppressLint("ClickableViewAccessibility")
 public class RippleView extends Button {
+
+    /**********************************************************
+     *
+     * Constants
+     *
+     */
+
+    private static final long ANIM_DURATION = 300L;
+    private static final float DEFAULT_START_RADIUS = 40; // 40dp
+
+    /**********************************************************
+     *
+     * Variables
+     *
+     */
 
     private float mDownX;
     private float mDownY;
@@ -40,6 +55,8 @@ public class RippleView extends Button {
     private float mRadius;
     private float mMaxRadius;
 
+    private long mRippleDuration = ANIM_DURATION;
+    private float mStartRadius = dp(DEFAULT_START_RADIUS);
     private int mRippleColor;
     private boolean mIsAnimating = false;
     private boolean mHover = true;
@@ -48,9 +65,16 @@ public class RippleView extends Button {
     private Paint mPaint;
     private ObjectAnimator mRadiusAnimator;
 
-    private int dp(int dp) {
-        return (int) (dp * mDensity + 0.5f);
-    }
+    private boolean mAnimationIsCancel;
+    private Rect mRect;
+    private Path mPath = new Path();
+
+
+    /**********************************************************
+     *
+     * Constructors
+     *
+     */
 
     public RippleView(Context context) {
         this(context, null);
@@ -65,6 +89,8 @@ public class RippleView extends Button {
         init();
         TypedArray a = context.obtainStyledAttributes(attrs,
                 R.styleable.RippleView);
+        mRippleDuration = a.getInteger(R.styleable.RippleView_duration, (int)ANIM_DURATION);
+        mStartRadius = a.getDimensionPixelSize(R.styleable.RippleView_startRadius, (int)dp(DEFAULT_START_RADIUS));
         mRippleColor = a.getColor(R.styleable.RippleView_rippleColor,
                 mRippleColor);
         mAlphaFactor = a.getFloat(R.styleable.RippleView_alphaFactor,
@@ -73,22 +99,20 @@ public class RippleView extends Button {
         a.recycle();
     }
 
-    public void init() {
-        mDensity = getContext().getResources().getDisplayMetrics().density;
 
-        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mPaint.setAlpha(100);
-        setRippleColor(Color.BLACK, 0.2f);
+    /**********************************************************
+     *
+     * Overridden Methods
+     *
+     */
 
-    }
-
-    public void setRippleColor(int rippleColor, float alphaFactor) {
-        mRippleColor = rippleColor;
-        mAlphaFactor = alphaFactor;
-    }
-
-    public void setHover(boolean enabled) {
-        mHover = enabled;
+    @Override
+    public boolean performClick() {
+        if(mIsAnimating) {
+            return false;
+        }else {
+            return super.performClick();
+        }
     }
 
     @Override
@@ -97,14 +121,8 @@ public class RippleView extends Button {
         mMaxRadius = (float) Math.sqrt(w * w + h * h);
     }
 
-    private boolean mAnimationIsCancel;
-    private Rect mRect;
-
     @Override
     public boolean onTouchEvent(final MotionEvent event) {
-        Log.d("TouchEvent", String.valueOf(event.getActionMasked()));
-        Log.d("mIsAnimating", String.valueOf(mIsAnimating));
-        Log.d("mAnimationIsCancel", String.valueOf(mAnimationIsCancel));
         boolean superResult = super.onTouchEvent(event);
         if (event.getActionMasked() == MotionEvent.ACTION_DOWN
                 && this.isEnabled() && mHover) {
@@ -113,8 +131,8 @@ public class RippleView extends Button {
             mDownX = event.getX();
             mDownY = event.getY();
 
-            mRadiusAnimator = ObjectAnimator.ofFloat(this, "radius", 0, dp(50))
-                    .setDuration(400);
+            mRadiusAnimator = ObjectAnimator.ofFloat(this, "radius", 0, mStartRadius)
+                    .setDuration(mRippleDuration);
             mRadiusAnimator
                     .setInterpolator(new AccelerateDecelerateInterpolator());
             mRadiusAnimator.start();
@@ -132,7 +150,7 @@ public class RippleView extends Button {
                     getTop() + (int) event.getY())) {
                 setRadius(0);
             } else {
-                setRadius(dp(50));
+                setRadius(mStartRadius);
             }
             if (!superResult) {
                 return true;
@@ -149,9 +167,9 @@ public class RippleView extends Button {
             if (mIsAnimating) {
                 mRadiusAnimator.cancel();
             }
-            mRadiusAnimator = ObjectAnimator.ofFloat(this, "radius", dp(50),
+            mRadiusAnimator = ObjectAnimator.ofFloat(this, "radius", mStartRadius,
                     targetRadius);
-            mRadiusAnimator.setDuration(500);
+            mRadiusAnimator.setDuration(mRippleDuration);
             mRadiusAnimator
                     .setInterpolator(new AccelerateDecelerateInterpolator());
             mRadiusAnimator.addListener(new Animator.AnimatorListener() {
@@ -163,8 +181,9 @@ public class RippleView extends Button {
                 @Override
                 public void onAnimationEnd(Animator animator) {
                     setRadius(0);
-                    setAlpha(1);
+                    ViewHelper.setAlpha(RippleView.this, 1);
                     mIsAnimating = false;
+                    performClick();
                 }
 
                 @Override
@@ -185,27 +204,6 @@ public class RippleView extends Button {
         return superResult;
     }
 
-    public int adjustAlpha(int color, float factor) {
-        int alpha = Math.round(Color.alpha(color) * factor);
-        int red = Color.red(color);
-        int green = Color.green(color);
-        int blue = Color.blue(color);
-        return Color.argb(alpha, red, green, blue);
-    }
-
-    public void setRadius(final float radius) {
-        mRadius = radius;
-        if (mRadius > 0) {
-            mRadialGradient = new RadialGradient(mDownX, mDownY, mRadius,
-                    adjustAlpha(mRippleColor, mAlphaFactor), mRippleColor,
-                    Shader.TileMode.MIRROR);
-            mPaint.setShader(mRadialGradient);
-        }
-        invalidate();
-    }
-
-    private Path mPath = new Path();
-
     @Override
     protected void onDraw(final Canvas canvas) {
         super.onDraw(canvas);
@@ -224,5 +222,92 @@ public class RippleView extends Button {
 
         canvas.drawCircle(mDownX, mDownY, mRadius, mPaint);
     }
+
+    /**********************************************************
+     *
+     * Helper Methods
+     *
+     */
+
+    /**
+     * Intialize the RippleView
+     */
+    public void init() {
+        mDensity = getContext().getResources().getDisplayMetrics().density;
+
+        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mPaint.setAlpha(100);
+        setRippleColor(Color.BLACK, 0.2f);
+    }
+
+    /**
+     * Set the color of the ripple effect
+     *
+     * @param rippleColor       the ripple color
+     * @param alphaFactor       the color alpha
+     */
+    public void setRippleColor(int rippleColor, float alphaFactor) {
+        mRippleColor = rippleColor;
+        mAlphaFactor = alphaFactor;
+    }
+
+    /**
+     * Set hover enabled, that is the ripple being drawn on hover
+     *
+     * @param enabled       the hover value
+     */
+    public void setHover(boolean enabled) {
+        mHover = enabled;
+    }
+
+    /**
+     * Set the start radius of the ripple effect
+     *
+     * @param radius        the starting radius of the ripple effect
+     */
+    public void setStartRadius(int radius){
+        mStartRadius = radius;
+    }
+
+    /**
+     * Adjust the alpha level of a color
+     *
+     * @param color     the color to modify
+     * @param factor    the alpha factor to modify by
+     * @return
+     */
+    private int adjustAlpha(int color, float factor) {
+        int alpha = Math.round(Color.alpha(color) * factor);
+        int red = Color.red(color);
+        int green = Color.green(color);
+        int blue = Color.blue(color);
+        return Color.argb(alpha, red, green, blue);
+    }
+
+    /**
+     * Update the radius of the drawn ripple
+     * @param radius        the updated radius ripple to apply
+     */
+    private void setRadius(final float radius) {
+        mRadius = radius;
+        if (mRadius > 0) {
+            mRadialGradient = new RadialGradient(mDownX, mDownY, mRadius,
+                    adjustAlpha(mRippleColor, mAlphaFactor), mRippleColor,
+                    Shader.TileMode.MIRROR);
+            mPaint.setShader(mRadialGradient);
+        }
+        invalidate();
+    }
+
+    /**
+     * Convert DP to Pixels
+     *
+     * @param dp        the dp value to convert
+     * @return          the pixel value for the provided DP
+     */
+    private float dp(float dp) {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+    }
+
 
 }

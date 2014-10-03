@@ -5,11 +5,13 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Handler;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
 
 import com.r0adkll.postoffice.styles.Style;
 import com.r0adkll.postoffice.ui.Mail;
+import com.r0adkll.postoffice.ui.SupportMail;
 
 /**
  * This is the main construct that contains all the configuration data needed
@@ -29,6 +31,7 @@ public class Delivery {
 
     private Context mCtx;
     private Mail mActiveMail;
+    private SupportMail mActiveSupportMail;
 
     private CharSequence mTitle;
     private CharSequence mMessage;
@@ -277,6 +280,15 @@ public class Delivery {
     }
 
     /**
+     * Get the active support outgoing mail (dialog) reference if there is one
+     *
+     * @return      the active support outgoing mail, or null
+     */
+    public SupportMail getSupportMail(){
+        return mActiveSupportMail;
+    }
+
+    /**
      * Generate and configure a new DialogFragment
      *
      * @return
@@ -287,12 +299,23 @@ public class Delivery {
         return mail;
     }
 
+    /**
+     * Generate and configure a new SupportDialogFragment
+     * for use with the support library
+     *
+     * @return      the support enabled dialog fragment
+     */
+    private SupportMail generateSupportDialogFragment(){
+        SupportMail mail = SupportMail.createInstance();
+        mail.setConfiguration(this);
+        return mail;
+    }
+
     /**********************************************************
      *
      * Display Methods
      *
      */
-
 
     /**
      * Show/Create a DialogFragment on the provided FragmentManager with
@@ -303,7 +326,6 @@ public class Delivery {
      * @param tag           the tag for the dialog fragment in the manager
      */
     public void show(FragmentManager manager, String tag){
-        // Generate the appropriate DialogFragment
         mActiveMail = generateDialogFragment();
         mActiveMail.show(manager, tag);
     }
@@ -317,7 +339,6 @@ public class Delivery {
      * @param tag           the tag for the dialog fragment in the manager
      */
     public void show(FragmentTransaction transaction, String tag){
-        // Generate the appropriate DialogFragment
         mActiveMail = generateDialogFragment();
         mActiveMail.show(transaction, tag);
     }
@@ -330,9 +351,7 @@ public class Delivery {
      * @param manager       the fragment manager used to add the Dialog into the UI
      */
     public void show(FragmentManager manager){
-        // Generate the appropriate DialogFragment
-        mActiveMail = generateDialogFragment();
-        mActiveMail.show(manager, null);
+        show(manager, null);
     }
 
     /**
@@ -343,20 +362,85 @@ public class Delivery {
      * @param transaction   the fragment transaction used to show the dialog
      */
     public void show(FragmentTransaction transaction){
-        // Generate the appropriate DialogFragment
-        mActiveMail = generateDialogFragment();
-        mActiveMail.show(transaction, null);
+        show(transaction, null);
+    }
+
+    /**
+     * Show/Create a Support DialogFragment on the provided Support FragmentManager with
+     * the given tag
+     *
+     * @see android.support.v4.app.DialogFragment#show(android.support.v4.app.FragmentManager, String)
+     * @param manager       the support fragment manager to display the dialog with
+     * @param tag           the tag to identify the dialog fragment in the manager
+     */
+    public void show(android.support.v4.app.FragmentManager manager, String tag){
+        mActiveSupportMail = generateSupportDialogFragment();
+        mActiveSupportMail.show(manager, tag);
+    }
+
+    /**
+     * Show/Create a Support DialogFragment on the provided Support FragmentTransaction with
+     * the given tag
+     *
+     * @see android.support.v4.app.DialogFragment#show(android.support.v4.app.FragmentTransaction, String)
+     * @param transaction       the support fragment transaction to display the dialog with
+     * @param tag               the tag to identify the dialog fragment in the manager
+     */
+    public void show(android.support.v4.app.FragmentTransaction transaction, String tag){
+        mActiveSupportMail = generateSupportDialogFragment();
+        mActiveSupportMail.show(transaction, tag);
+    }
+
+    /**
+     * Show/Create a Support DialogFragment on the provided Support FragmentManager
+     *
+     * @see android.support.v4.app.DialogFragment#show(android.support.v4.app.FragmentManager, String)
+     * @param manager       the support fragment manager to display the dialog with
+     */
+    public void show(android.support.v4.app.FragmentManager manager){
+        show(manager, null);
+    }
+
+    /**
+     * Show/Create a Support DialogFragment on the provided Support FragmentTransaction
+     *
+     * @see android.support.v4.app.DialogFragment#show(android.support.v4.app.FragmentTransaction, String)
+     * @param transaction       the support fragment transaction to display the dialog with
+     */
+    public void show(android.support.v4.app.FragmentTransaction transaction){
+        show(transaction, null);
     }
 
     /**
      * Dismiss whatever dialog spawned by show(...)
      *
-     * @see android.app.Dialog#dismiss()
      * @see android.app.DialogFragment#dismiss()
      */
     public void dismiss(){
         if(mActiveMail != null){
             mActiveMail.dismiss();
+        }
+
+        if (mActiveSupportMail != null){
+            mActiveSupportMail.dismiss();
+        }
+    }
+
+    /**
+     * Dismiss whatever dialog spawned by show(...)
+     *
+     * Version of {@link #dismiss()} that uses
+     * {@link FragmentTransaction#commitAllowingStateLoss()
+     * FragmentTransaction.commitAllowingStateLoss()}.  See linked
+     * documentation for further details.
+     */
+    public void dismissAllowingStateLoss(){
+        if(mActiveMail != null){
+            mActiveMail.dismissAllowingStateLoss();
+        }
+
+        if(mActiveSupportMail != null){
+            mActiveSupportMail.dismissAllowingStateLoss();
         }
     }
 
@@ -617,7 +701,7 @@ public class Delivery {
             // Ensure that simple alerts have an ok to dismiss button
             if(delivery.getStyle() == null && delivery.getButtonCount() == 0){
                 this.setButton(Dialog.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
-                    @Override public void onClick(DialogInterface dialog, int which) {
+                    @Override public void onClick(final DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
                 });
