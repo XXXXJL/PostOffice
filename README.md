@@ -3,7 +3,6 @@
 [**Version 1.0.3**](id:version)  
 
 This is a library for easily constructing Holo and Material Design Dialogs.
-There are screenshots of my progress in the /images folder as this is a work in progress.
 
 ## Usage
 
