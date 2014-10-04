@@ -6,6 +6,6 @@
     ripple:alphaFactor="0.7"
     ripple:rippleColor="@color/ripple_material_light"
     ripple:startRadius="16dp"
-    ripple:duration="250"
+    ripple:rippleDuration="250"
     ripple:hover="true"
     />

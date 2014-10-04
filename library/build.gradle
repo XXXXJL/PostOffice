@@ -8,8 +8,6 @@ android {
         applicationId "com.r0adkll.postoffice"
         minSdkVersion 14
         targetSdkVersion 20
-        versionCode 3
-        versionName "1.0.2"
     }
 
     compileOptions {

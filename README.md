@@ -1,6 +1,6 @@
 # PostOffice  
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-PostOffice-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1024)    
-[**Version 1.0.4**](id:version)
+[**Version 1.0.5**](id:version)
 
 This is a library for easily constructing Holo and Material Design Dialogs in either Light or Dark modes, and are completely styleable and customizable. 
 
@@ -134,7 +134,7 @@ Here is a list of features I will add or look into adding in the near future. If
 ## Implementing
 Add this line to your gradle dependencies
 
-	compile 'com.r0adkll:postoffice:1.0.4'
+	compile 'com.r0adkll:postoffice:1.0.5'
 
 ## Author
 

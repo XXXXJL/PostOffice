@@ -89,7 +89,7 @@ public class RippleView extends Button {
         init();
         TypedArray a = context.obtainStyledAttributes(attrs,
                 R.styleable.RippleView);
-        mRippleDuration = a.getInteger(R.styleable.RippleView_duration, (int)ANIM_DURATION);
+        mRippleDuration = a.getInteger(R.styleable.RippleView_rippleDuration, (int)ANIM_DURATION);
         mStartRadius = a.getDimensionPixelSize(R.styleable.RippleView_startRadius, (int)dp(DEFAULT_START_RADIUS));
         mRippleColor = a.getColor(R.styleable.RippleView_rippleColor,
                 mRippleColor);
