@@ -129,7 +129,7 @@ Here is a list of features I will add or look into adding in the near future. If
 
 ## Example
 
--	Download the example to play with: [example.apk](https://github.com/r0adkll/PostOffice/raw/master/example.apk)
+-	Try out the example on the PlayStore: [PostOffice Example](https://play.google.com/store/apps/details?id=com.r0adkll.postoffice.example)
 	
 ## Implementing
 Add this line to your gradle dependencies
