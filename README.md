@@ -1,8 +1,8 @@
-# PostOffice 
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-PostOffice-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1024)  
-[**Version 1.0.3**](id:version)  
+# PostOffice  
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-PostOffice-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1024)    
+[**Version 1.0.4**](id:version)
 
-This is a library for easily constructing Holo and Material Design Dialogs.
+This is a library for easily constructing Holo and Material Design Dialogs in either Light or Dark modes, and are completely styleable and customizable. 
 
 ## Usage
 
@@ -66,6 +66,11 @@ Call one of the simpler quick call items;
 					.build(BaseAdapter)
 			)
 			.build();
+			.show(FragmentManager, String);
+			.show(FragmentTransaction, String);
+			.show(android.support.v4.FragmentManager, String);
+			.show(android.support.v4.FragmentTransaction, String);
+			
 			
 ### Delivery Interface
 
@@ -105,7 +110,6 @@ or
 			  .setIcon(R.drawable.ic_launcher)
 			  .setThemeColor(R.color.app_color)
 			  .setDesign(Design.MATERIAL_LIGHT)
-			  .build()
 			  .show(getFragmentManager());
 			  
 		    
@@ -130,7 +134,7 @@ Here is a list of features I will add or look into adding in the near future. If
 ## Implementing
 Add this line to your gradle dependencies
 
-	compile 'com.r0adkll:postoffice:1.0.3'
+	compile 'com.r0adkll:postoffice:1.0.4'
 
 ## Author
 

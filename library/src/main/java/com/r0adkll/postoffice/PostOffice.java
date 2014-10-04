@@ -39,6 +39,18 @@ public class PostOffice {
     }
 
     /**
+     * Lick the default {@link com.r0adkll.postoffice.model.Stamp} and apply it to outgoing {@link com.r0adkll.postoffice.ui.Mail}
+     * for any delivery that isn't started with {@link #newMail(android.content.Context)}
+     *
+     * This is a convenience method for the singleton
+     *
+     * @param stamp     the stamp to lick and apply
+     */
+    public static void lick(Stamp stamp){
+        getPostman().lickStamp(stamp);
+    }
+
+    /**
      * This is the default stamp instance that can be set for
      * teh post office to apply deliveries
      */
@@ -55,7 +67,7 @@ public class PostOffice {
      *
      * @param stamp     the stamp to lick and apply
      */
-    public void lick(Stamp stamp){
+    public void lickStamp(Stamp stamp){
         defaultStamp = stamp;
     }
 

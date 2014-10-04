@@ -6,6 +6,9 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Handler;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.text.TextUtils;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
 
@@ -709,6 +712,99 @@ public class Delivery {
 
             return delivery;
         }
+
+        /**
+         * Build and deliver the mail
+         *
+         * @param manager       the fragment manager used to add the Dialog into the UI
+         * @param tag           the tag for the dialog fragment in the manager
+         * @return              the built/shown delivery
+         */
+        public Delivery show(FragmentManager manager, String tag){
+            Delivery delivery = build();
+            delivery.show(manager, tag);
+            return delivery;
+        }
+
+        /**
+         * Build and deliver the mail
+         *
+         * @param manager       the fragment manager used to add the Dialog into the UI
+         * @param tag           the tag for the dialog fragment in the manager
+         * @return              the built/shown delivery
+         */
+        public Delivery show(android.support.v4.app.FragmentManager manager, String tag){
+            Delivery delivery = build();
+            delivery.show(manager, tag);
+            return delivery;
+        }
+
+        /**
+         * Build and deliver the mail
+         *
+         * @param manager       the fragment manager used to add the Dialog into the UI
+         * @return              the built/shown delivery
+         */
+        public Delivery show(FragmentManager manager){
+            return show(manager, null);
+        }
+
+        /**
+         * Build and deliver the mail
+         *
+         * @param manager       the fragment manager used to add the Dialog into the UI
+         * @return              the built/shown delivery
+         */
+        public Delivery show(android.support.v4.app.FragmentManager manager){
+            return show(manager, null);
+        }
+
+        /**
+         * Build and deliver the mail
+         *
+         * @param transaction   the fragment transaction used to show the dialog
+         * @param tag           the tag for the dialog fragment in the manager
+         * @return              the built/shown delivery
+         */
+        public Delivery show(FragmentTransaction transaction, String tag){
+            Delivery delivery = build();
+            delivery.show(transaction, tag);
+            return delivery;
+        }
+
+        /**
+         * Build and deliver the mail
+         *
+         * @param transaction   the fragment transaction used to show the dialog
+         * @param tag           the tag for the dialog fragment in the manager
+         * @return              the built/shown delivery
+         */
+        public Delivery show(android.support.v4.app.FragmentTransaction transaction, String tag){
+            Delivery delivery = build();
+            delivery.show(transaction, tag);
+            return delivery;
+        }
+
+        /**
+         * Build and deliver the mail
+         *
+         * @param transaction   the fragment transaction used to show the dialog
+         * @return              the built/shown delivery
+         */
+        public Delivery show(FragmentTransaction transaction){
+            return show(transaction, null);
+        }
+
+        /**
+         * Build and deliver the mail
+         *
+         * @param transaction   the fragment transaction used to show the dialog
+         * @return              the built/shown delivery
+         */
+        public Delivery show(android.support.v4.app.FragmentTransaction transaction){
+            return show(transaction, null);
+        }
+
 
     }
 
