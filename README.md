@@ -27,6 +27,7 @@ Call one of the simpler quick call items;
 			
 			.setButton(Integer, <CharSequence, Integer>, DialogInterface.OnClickListener)
 			.setThemeColor(int color)
+			.setThemeColorFromResource(int colorResId)
 			
 			.showKeyboardOnDisplay(Boolean)
 			.setCancelable(Boolean)
