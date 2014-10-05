@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/parentPanel"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
             <ImageView android:id="@+id/icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingEnd="8dp"
+                android:paddingRight="8dp"
                 android:src="@null"/>
             <TextView android:id="@+id/alertTitle"
                 style="@android:style/TextAppearance.Holo.DialogWindowTitle"
@@ -45,6 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical">
+
         <TextView android:id="@+id/message"
             style="?android:attr/textAppearanceMedium"
             android:layout_width="match_parent"
@@ -55,8 +56,9 @@
             android:paddingBottom="8dp"
             android:textIsSelectable="true"
 
-            android:text="This is a test, this is a test, this is a test, this is a test, this is a test"
+            tools:text="This is a test, this is a test, this is a test, this is a test, this is a test"
             />
+
     </LinearLayout>
 
     <FrameLayout android:id="@+id/customPanel"

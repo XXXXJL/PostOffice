@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.r0adkll.deadskunk.utils.Utils;
 import com.r0adkll.postoffice.PostOffice;
 import com.r0adkll.postoffice.model.Delivery;
 import com.r0adkll.postoffice.model.Design;
@@ -186,7 +187,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 delivery = PostOffice.newMail(this)
                         .setTitle(R.string.mtrl_alert_title)
                         .setThemeColor(getColor())
-                        .setMessage(R.string.message)
+                        .setMessage(Utils.getRandom().nextBoolean() ? R.string.message : R.string.message_long)
                         .setDesign(mtrlDesign)
                         .setCanceledOnTouchOutside(true)
                         .setCancelable(true)

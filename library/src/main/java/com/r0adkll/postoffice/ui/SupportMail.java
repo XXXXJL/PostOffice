@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.ftinc.fontloader.FontLoader;
@@ -73,6 +74,7 @@ public class SupportMail extends DialogFragment {
     private TextView mMessage;
     private FrameLayout mContentFrame;
     private LinearLayout mButtonContainer;
+    private ScrollView mMessageScrollview;
 
     private Delivery mConstruct;
 
@@ -105,9 +107,10 @@ public class SupportMail extends DialogFragment {
                 }
 
                 if (mConstruct.getMessage() != null)
-                    mMessage.setText(applyKerning(mConstruct.getMessage(), 0.03f));
+                    mMessage.setText(mConstruct.getMessage());
                 else
-                    mContentFrame.removeView(mMessage);
+                    mContentFrame.removeView(mMessageScrollview);
+
 
                 if (mConstruct.getDesign().isMaterial()) {
                     FontLoader.applyTypeface(mTitle, Types.ROBOTO_MEDIUM);
@@ -162,24 +165,30 @@ public class SupportMail extends DialogFragment {
 
         }
 
-        // Lastly apply the other dialog options
-        setCancelable(mConstruct.isCancelable());
-        getDialog().setCanceledOnTouchOutside(mConstruct.isCanceledOnTouchOutside());
-        getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                if(mConstruct.getOnShowListener() != null) mConstruct.getOnShowListener().onShow(dialog);
-                if(mConstruct.getStyle() != null) mConstruct.getStyle().onDialogShow(getDialog());
+        if(mConstruct != null) {
+            // Lastly apply the other dialog options
+            setCancelable(mConstruct.isCancelable());
+            getDialog().setCanceledOnTouchOutside(mConstruct.isCanceledOnTouchOutside());
+            getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface dialog) {
+                    if (mConstruct.getOnShowListener() != null)
+                        mConstruct.getOnShowListener().onShow(dialog);
+                    if (mConstruct.getStyle() != null)
+                        mConstruct.getStyle().onDialogShow(getDialog());
 
-                if(mConstruct.isShowKeyboardOnDisplay()){
-                    if(mConstruct.getStyle() instanceof EditTextStyle){
-                        EditText et =((EditTextStyle) mConstruct.getStyle()).getEditTextView();
-                        mImm.showSoftInput(et, InputMethodManager.SHOW_IMPLICIT);
+                    if (mConstruct.isShowKeyboardOnDisplay()) {
+                        if (mConstruct.getStyle() instanceof EditTextStyle) {
+                            EditText et = ((EditTextStyle) mConstruct.getStyle()).getEditTextView();
+                            mImm.showSoftInput(et, InputMethodManager.SHOW_IMPLICIT);
+                        }
                     }
-                }
 
-            }
-        });
+                }
+            });
+        }else{
+            dismiss();
+        }
 
     }
 
@@ -201,6 +210,7 @@ public class SupportMail extends DialogFragment {
 
                 mTitle = (TextView) view.findViewById(R.id.title);
                 mMessage = (TextView) view.findViewById(R.id.message);
+                mMessageScrollview = (ScrollView) view.findViewById(R.id.message_scrollview);
                 mContentFrame = (FrameLayout) view.findViewById(R.id.content_frame);
                 mButtonContainer = (LinearLayout) view.findViewById(R.id.button_container);
             }else{
@@ -350,6 +360,7 @@ public class SupportMail extends DialogFragment {
         if(delivery.getStyle() == null && delivery.getMessage() != null){
             mMessage.setText(delivery.getMessage());
             mMessage.setTextColor(ctx.getResources().getColor(delivery.getDesign().isLight() ? R.color.background_material_dark : R.color.background_material_light));
+
         }else{
             contentPanel.setVisibility(View.GONE);
         }

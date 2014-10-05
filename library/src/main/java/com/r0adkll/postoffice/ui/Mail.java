@@ -6,14 +6,12 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ScaleXSpan;
-import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -24,6 +22,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.ftinc.fontloader.FontLoader;
@@ -75,6 +74,7 @@ public class Mail extends DialogFragment {
     private TextView mMessage;
     private FrameLayout mContentFrame;
     private LinearLayout mButtonContainer;
+    private ScrollView mMessageScrollview;
 
     private Delivery mConstruct;
 
@@ -107,10 +107,9 @@ public class Mail extends DialogFragment {
                 }
 
                 if (mConstruct.getMessage() != null)
-                    mMessage.setText(applyKerning(mConstruct.getMessage(), 0.03f));
+                    mMessage.setText(mConstruct.getMessage());
                 else
-                    mContentFrame.removeView(mMessage);
-
+                    mContentFrame.removeView(mMessageScrollview);
 
                 if (mConstruct.getDesign().isMaterial()) {
                     FontLoader.applyTypeface(mTitle, Types.ROBOTO_MEDIUM);
@@ -165,24 +164,30 @@ public class Mail extends DialogFragment {
 
         }
 
-        // Lastly apply the other dialog options
-        setCancelable(mConstruct.isCancelable());
-        getDialog().setCanceledOnTouchOutside(mConstruct.isCanceledOnTouchOutside());
-        getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                if(mConstruct.getOnShowListener() != null) mConstruct.getOnShowListener().onShow(dialog);
-                if(mConstruct.getStyle() != null) mConstruct.getStyle().onDialogShow(getDialog());
+        if(mConstruct != null) {
+            // Lastly apply the other dialog options
+            setCancelable(mConstruct.isCancelable());
+            getDialog().setCanceledOnTouchOutside(mConstruct.isCanceledOnTouchOutside());
+            getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface dialog) {
+                    if (mConstruct.getOnShowListener() != null)
+                        mConstruct.getOnShowListener().onShow(dialog);
+                    if (mConstruct.getStyle() != null)
+                        mConstruct.getStyle().onDialogShow(getDialog());
 
-                if(mConstruct.isShowKeyboardOnDisplay()){
-                    if(mConstruct.getStyle() instanceof EditTextStyle){
-                        EditText et =((EditTextStyle) mConstruct.getStyle()).getEditTextView();
-                        mImm.showSoftInput(et, InputMethodManager.SHOW_IMPLICIT);
+                    if (mConstruct.isShowKeyboardOnDisplay()) {
+                        if (mConstruct.getStyle() instanceof EditTextStyle) {
+                            EditText et = ((EditTextStyle) mConstruct.getStyle()).getEditTextView();
+                            mImm.showSoftInput(et, InputMethodManager.SHOW_IMPLICIT);
+                        }
                     }
-                }
 
-            }
-        });
+                }
+            });
+        }else{
+            dismiss();
+        }
 
     }
 
@@ -204,6 +209,7 @@ public class Mail extends DialogFragment {
 
                 mTitle = (TextView) view.findViewById(R.id.title);
                 mMessage = (TextView) view.findViewById(R.id.message);
+                mMessageScrollview = (ScrollView) view.findViewById(R.id.message_scrollview);
                 mContentFrame = (FrameLayout) view.findViewById(R.id.content_frame);
                 mButtonContainer = (LinearLayout) view.findViewById(R.id.button_container);
             }else{
@@ -353,6 +359,7 @@ public class Mail extends DialogFragment {
         if(delivery.getStyle() == null && delivery.getMessage() != null){
             mMessage.setText(delivery.getMessage());
             mMessage.setTextColor(ctx.getResources().getColor(delivery.getDesign().isLight() ? R.color.background_material_dark : R.color.background_material_light));
+
         }else{
             contentPanel.setVisibility(View.GONE);
         }

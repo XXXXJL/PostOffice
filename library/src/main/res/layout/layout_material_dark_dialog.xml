@@ -20,21 +20,30 @@
     <FrameLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         >
 
-        <!-- By Default use a TextView here -->
-        <TextView
-            android:id="@+id/message"
-            style="@style/Widget.PostOffice.Material.Dark.Dialog.Message"
+        <ScrollView
+            android:id="@+id/message_scrollview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/material_spacing"
-            android:layout_marginLeft="@dimen/material_spacing"
-            android:layout_marginRight="@dimen/material_spacing"
+            >
 
-            tools:text="This is an example of some dialog content warning or telling the user some message. Lorem ipsum dolor set something something something need to burn more space.. ahahahahhahah"
-            />
+            <!-- By Default use a TextView here -->
+            <TextView
+                android:id="@+id/message"
+                style="@style/Widget.PostOffice.Material.Dark.Dialog.Message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/material_spacing"
+                android:layout_marginLeft="@dimen/material_spacing"
+                android:layout_marginRight="@dimen/material_spacing"
+
+                tools:text="@string/message"
+                />
+
+        </ScrollView>
 
     </FrameLayout>
 
@@ -54,6 +63,5 @@
 
 
     </LinearLayout>
-
 
 </LinearLayout>

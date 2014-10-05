@@ -5,10 +5,6 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Handler;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.text.TextUtils;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
 
