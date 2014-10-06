@@ -124,9 +124,7 @@ or
 ## Going Forward
 Here is a list of features I will add or look into adding in the near future. If you have any features you would like to add feel free to submit a Pull request or email me.  
 
--	**[DONE]** Support for Support FragmentManager
--	**[DONE]** Update the text tracking and kerning for Material Design dialogs to become full spec
--	**[DONE]** Add a delay to dismissing Material design dialogs so the user can see the ripple effect
+-	Add the ability to click links, and set the 'Movement Method' of the alert text view. 
 
 ## Example
 
