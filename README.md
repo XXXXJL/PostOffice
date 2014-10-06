@@ -127,6 +127,7 @@ or
 Here is a list of features I will add or look into adding in the near future. If you have any features you would like to add feel free to submit a Pull request or email me.  
 
 -	Add the ability to click links, and set the 'Movement Method' of the alert text view. 
+-	Make the Material Design buttons stack vertically if the button text > X characters, or by direct specification.
 
 ## Example
 
