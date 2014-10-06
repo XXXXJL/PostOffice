@@ -6,6 +6,8 @@ This is a library for easily constructing Holo and Material Design Dialogs in ei
 
 ## Usage
 
+Please refer to the [wiki](https://github.com/r0adkll/PostOffice/wiki) for a more detailed explanation of how to use this library.
+
 Call `PostOffice.newMail()` to start building a new dialog. This method will return a `Delivery` object which is an interface into the actual system Dialog that is created from the builder. 
 
 _OR_ 
