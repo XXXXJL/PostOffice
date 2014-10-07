@@ -127,7 +127,8 @@ or
 Here is a list of features I will add or look into adding in the near future. If you have any features you would like to add feel free to submit a Pull request or email me.  
 
 -	**[DONE]** Add the ability to click links, and set the 'Movement Method' of the alert text view.
--	Make the Material Design buttons stack vertically if the button text > X characters, or by direct specification.
+-	Make the Material Design actions up to spec, where if the text expands the button to > 124dp, then it will switch to stacking them.
+-	Add dismissive actions, i.e. alt actions such as this: [Actions](https://www.google.com/design/spec/components/dialogs.html#dialogs-actions)
 
 ## Example
 
