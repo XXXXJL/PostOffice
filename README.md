@@ -138,7 +138,7 @@ Here is a list of features I will add or look into adding in the near future. If
 ## Implementing
 Add this line to your gradle dependencies
 
-	compile 'com.r0adkll:postoffice:1.0.7'
+	compile 'com.r0adkll:postoffice:{latest_version}'
 
 ## Author
 
