@@ -1,6 +1,6 @@
 # PostOffice  
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-PostOffice-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1024)    
-[**Version 1.0.6**](id:version)
+[**Version 1.0.7**](id:version)
 
 This is a library for easily constructing Holo and Material Design Dialogs in either Light or Dark modes, and are completely styleable and customizable. 
 
@@ -126,7 +126,7 @@ or
 ## Going Forward
 Here is a list of features I will add or look into adding in the near future. If you have any features you would like to add feel free to submit a Pull request or email me.  
 
--	Add the ability to click links, and set the 'Movement Method' of the alert text view. 
+-	**[DONE]** Add the ability to click links, and set the 'Movement Method' of the alert text view.
 -	Make the Material Design buttons stack vertically if the button text > X characters, or by direct specification.
 
 ## Example
@@ -136,7 +136,7 @@ Here is a list of features I will add or look into adding in the near future. If
 ## Implementing
 Add this line to your gradle dependencies
 
-	compile 'com.r0adkll:postoffice:1.0.6'
+	compile 'com.r0adkll:postoffice:1.0.7'
 
 ## Author
 

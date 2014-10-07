@@ -106,11 +106,14 @@ public class SupportMail extends DialogFragment {
                     mTitle.setVisibility(View.GONE);
                 }
 
-                if (mConstruct.getMessage() != null)
-                    mMessage.setText(mConstruct.getMessage());
-                else
-                    mContentFrame.removeView(mMessageScrollview);
+                if (mConstruct.getMessage() != null) {
+                    if(mConstruct.getMovementMethod() != null)
+                        mMessage.setMovementMethod(mConstruct.getMovementMethod());
 
+                    mMessage.setAutoLinkMask(mConstruct.getAutoLinkMask());
+                    mMessage.setText(mConstruct.getMessage());
+                }else
+                    mContentFrame.removeView(mMessageScrollview);
 
                 if (mConstruct.getDesign().isMaterial()) {
                     FontLoader.applyTypeface(mTitle, Types.ROBOTO_MEDIUM);
@@ -358,9 +361,12 @@ public class SupportMail extends DialogFragment {
 
         // if the style is null, and the message exists in the construct, set the alert dialog message
         if(delivery.getStyle() == null && delivery.getMessage() != null){
+            if(delivery.getMovementMethod() != null)
+                mMessage.setMovementMethod(delivery.getMovementMethod());
+
+            mMessage.setAutoLinkMask(delivery.getAutoLinkMask());
             mMessage.setText(delivery.getMessage());
             mMessage.setTextColor(ctx.getResources().getColor(delivery.getDesign().isLight() ? R.color.background_material_dark : R.color.background_material_light));
-
         }else{
             contentPanel.setVisibility(View.GONE);
         }

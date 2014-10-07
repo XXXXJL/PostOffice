@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.method.MovementMethod;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
 
@@ -36,6 +37,9 @@ public class Delivery {
     private CharSequence mMessage;
     private int mIcon = -1;
     private int mThemeColor = -1;
+
+    private int mAutoLinkMask = 0;
+    private MovementMethod mMovementMethod = null;
 
     private SparseArray<ButtonConfig> mButtonMap;
     private SparseIntArray mButtonTextColorMap;
@@ -93,6 +97,26 @@ public class Delivery {
      */
     public CharSequence getMessage() {
         return mMessage;
+    }
+
+    /**
+     * Get the {@link android.text.method.MovementMethod} for the alert dialog's
+     * movement method
+     *
+     * @return      the set {@link android.text.method.MovementMethod} or null
+     */
+    public MovementMethod getMovementMethod(){
+        return mMovementMethod;
+    }
+
+    /**
+     * Get the alert dialog message TextView's AutoLink mask
+     *
+     * @see android.text.util.Linkify
+     * @return      the link mask
+     */
+    public int getAutoLinkMask(){
+        return mAutoLinkMask;
     }
 
     /**
@@ -557,6 +581,31 @@ public class Delivery {
          */
         public Builder setMessage(int msgResId, Object... args){
             delivery.mMessage = ctx.getString(msgResId, args);
+            return this;
+        }
+
+        /**
+         * Setup the autolink mask for {@link android.text.util.Linkify} auto masking the
+         * message text in alert dialogs.
+         *
+         * @see android.text.util.Linkify
+         * @param mask      the {@link android.text.util.Linkify} mask
+         * @return          self for chaining
+         */
+        public Builder setAutoLinkMask(int mask){
+            delivery.mAutoLinkMask = mask;
+            return this;
+        }
+
+        /**
+         * Set the alert dialogs message TextView's MovementMethod
+         *
+         * @see android.widget.TextView#setMovementMethod(android.text.method.MovementMethod)
+         * @param method    the movement method to apply
+         * @return          self for chaining
+         */
+        public Builder setMovementMethod(MovementMethod method){
+            delivery.mMovementMethod = method;
             return this;
         }
 

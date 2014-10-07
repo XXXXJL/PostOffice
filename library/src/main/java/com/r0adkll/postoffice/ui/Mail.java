@@ -10,8 +10,10 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ScaleXSpan;
+import android.text.util.Linkify;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -106,9 +108,13 @@ public class Mail extends DialogFragment {
                     mTitle.setVisibility(View.GONE);
                 }
 
-                if (mConstruct.getMessage() != null)
+                if (mConstruct.getMessage() != null) {
+                    if(mConstruct.getMovementMethod() != null)
+                        mMessage.setMovementMethod(mConstruct.getMovementMethod());
+
+                    mMessage.setAutoLinkMask(mConstruct.getAutoLinkMask());
                     mMessage.setText(mConstruct.getMessage());
-                else
+                }else
                     mContentFrame.removeView(mMessageScrollview);
 
                 if (mConstruct.getDesign().isMaterial()) {
@@ -357,9 +363,12 @@ public class Mail extends DialogFragment {
 
         // if the style is null, and the message exists in the construct, set the alert dialog message
         if(delivery.getStyle() == null && delivery.getMessage() != null){
+            if(delivery.getMovementMethod() != null)
+                mMessage.setMovementMethod(delivery.getMovementMethod());
+
+            mMessage.setAutoLinkMask(delivery.getAutoLinkMask());
             mMessage.setText(delivery.getMessage());
             mMessage.setTextColor(ctx.getResources().getColor(delivery.getDesign().isLight() ? R.color.background_material_dark : R.color.background_material_light));
-
         }else{
             contentPanel.setVisibility(View.GONE);
         }
