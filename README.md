@@ -25,6 +25,8 @@ Call one of the simpler quick call items;
 	Delivery interface = PostOffice.newMail(Context)
 			.setTitle(<CharSequence|Integer>)
 			.setMessage(<CharSequence|Integer>)
+			.setAutoLinkMask(Integer)
+			.setMovementMethod(MovementMethod)
 			.setIcon(Integer)
 			
 			.setButton(Integer, <CharSequence, Integer>, DialogInterface.OnClickListener)
