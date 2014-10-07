@@ -6,6 +6,8 @@ This is a library for easily constructing Holo and Material Design Dialogs in ei
 
 ## Usage
 
+Please refer to the [wiki](https://github.com/r0adkll/PostOffice/wiki) for a more detailed explanation of how to use this library.
+
 Call `PostOffice.newMail()` to start building a new dialog. This method will return a `Delivery` object which is an interface into the actual system Dialog that is created from the builder. 
 
 _OR_ 
@@ -124,9 +126,8 @@ or
 ## Going Forward
 Here is a list of features I will add or look into adding in the near future. If you have any features you would like to add feel free to submit a Pull request or email me.  
 
--	**[DONE]** Support for Support FragmentManager
--	**[DONE]** Update the text tracking and kerning for Material Design dialogs to become full spec
--	**[DONE]** Add a delay to dismissing Material design dialogs so the user can see the ripple effect
+-	Add the ability to click links, and set the 'Movement Method' of the alert text view. 
+-	Make the Material Design buttons stack vertically if the button text > X characters, or by direct specification.
 
 ## Example
 
