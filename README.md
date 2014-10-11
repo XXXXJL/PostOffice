@@ -119,10 +119,7 @@ or
 		    
 ## Screenshots
 		    
-![Home](images/po_1.png)  ![Home Dark](images/po_8.png)
-![Alert Holo](images/po_2.png)  ![Alert Material](images/po_3.png)  
-![EditText Material](images/po_4.png)  ![Progress Holo](images/po_5.png)  
-![List Holo](images/po_6.png)  ![List Mtrl](images/po_7.png)
+Check out the wiki for [Screenshots](https://github.com/r0adkll/PostOffice/wiki/Screenshots)
 
 ## Going Forward
 Here is a list of features I will add or look into adding in the near future. If you have any features you would like to add feel free to submit a Pull request or email me.  
