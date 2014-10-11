@@ -194,11 +194,17 @@ public class MainActivity extends Activity implements View.OnClickListener{
                         .setDesign(mtrlDesign)
                         .setCanceledOnTouchOutside(true)
                         .setCancelable(true)
-                        .setButton(Dialog.BUTTON_POSITIVE, R.string.action1, new DialogInterface.OnClickListener() {
+                        .setButton(Dialog.BUTTON_POSITIVE, "Dispatch Load", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 // Do something with teh clicks
                                 Toast.makeText(MainActivity.this, "Alert Material Closed.", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                            }
+                        })
+                        .setButton(Dialog.BUTTON_NEGATIVE, "Unload your holy fury", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
                             }
                         })
@@ -274,7 +280,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
             case R.id.progress_holo:
                 tag = "PROGRESS_HOLO";
                 delivery = PostOffice.newMail(this)
-                        .setTitle("Loading...")
+                        .setTitle("Downloading")
+                        .setMessage("Your download is currently in progress. Please wait.")
                         .setThemeColor(getColor())
                         .setDesign(holoDesign)
                         .setCancelable(false)
@@ -297,6 +304,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
             case R.id.progress_material:
                 tag = "PROGRESS_MATERIAL";
                 delivery = PostOffice.newMail(this)
+                        .setTitle("Downloading")
+                        .setMessage("Your download is currently in progress. Please wait.")
                         .setThemeColor(getColor())
                         .setDesign(mtrlDesign)
                         .setStyle(new ProgressStyle.Builder(this)

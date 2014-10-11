@@ -72,7 +72,8 @@ public class SupportMail extends DialogFragment {
 
     private TextView mTitle;
     private TextView mMessage;
-    private FrameLayout mContentFrame;
+    private LinearLayout mContentFrame;
+    private FrameLayout mStyleContent;
     private LinearLayout mButtonContainer;
     private ScrollView mMessageScrollview;
 
@@ -151,7 +152,7 @@ public class SupportMail extends DialogFragment {
 
                     // add to layout
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                            getResources().getDimensionPixelSize(R.dimen.material_button_width),
+                            ViewGroup.LayoutParams.WRAP_CONTENT,
                             getResources().getDimensionPixelSize(R.dimen.material_button_height));
 
                     mButtonContainer.addView(button, params);
@@ -162,8 +163,8 @@ public class SupportMail extends DialogFragment {
             }
 
             // Load Content
-            if (mContentFrame != null && mConstruct.getStyle() != null) {
-                mContentFrame.addView(mConstruct.getStyle().getContentView());
+            if (mStyleContent != null && mConstruct.getStyle() != null) {
+                mStyleContent.addView(mConstruct.getStyle().getContentView());
             }
 
         }
@@ -214,7 +215,8 @@ public class SupportMail extends DialogFragment {
                 mTitle = (TextView) view.findViewById(R.id.title);
                 mMessage = (TextView) view.findViewById(R.id.message);
                 mMessageScrollview = (ScrollView) view.findViewById(R.id.message_scrollview);
-                mContentFrame = (FrameLayout) view.findViewById(R.id.content_frame);
+                mContentFrame = (LinearLayout) view.findViewById(R.id.content_frame);
+                mStyleContent = (FrameLayout) view.findViewById(R.id.style_content);
                 mButtonContainer = (LinearLayout) view.findViewById(R.id.button_container);
             }else{
                 view = super.onCreateView(inflater, container, savedInstanceState);
@@ -360,7 +362,7 @@ public class SupportMail extends DialogFragment {
         // Set the content
 
         // if the style is null, and the message exists in the construct, set the alert dialog message
-        if(delivery.getStyle() == null && delivery.getMessage() != null){
+        if(delivery.getMessage() != null){
             if(delivery.getMovementMethod() != null)
                 mMessage.setMovementMethod(delivery.getMovementMethod());
 

@@ -17,11 +17,12 @@
         tools:text="Some title"
         />
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:orientation="vertical"
         >
 
         <ScrollView
@@ -40,14 +41,19 @@
                 android:layout_marginLeft="@dimen/material_spacing"
                 android:layout_marginRight="@dimen/material_spacing"
 
-                tools:text="@string/message"
+                tools:text="Doodly Doodly Doo Dat"
                 />
 
         </ScrollView>
 
-    </FrameLayout>
+        <FrameLayout
+            android:id="@+id/style_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
-    <LinearLayout
+    </LinearLayout>
+
+    <com.r0adkll.postoffice.widgets.MaterialButtonLayout
         android:id="@+id/button_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -62,7 +68,7 @@
         <!-- This is the container for all the material design buttons -->
 
 
-    </LinearLayout>
+    </com.r0adkll.postoffice.widgets.MaterialButtonLayout>
 
 
 </LinearLayout>
