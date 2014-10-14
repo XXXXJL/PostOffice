@@ -33,6 +33,12 @@ import com.r0adkll.postoffice.styles.EditTextStyle;
 import com.r0adkll.postoffice.styles.Style;
 import com.r0adkll.postoffice.widgets.RippleView;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * Project: PostOffice
  * Package: com.r0adkll.postoffice.ui
@@ -125,17 +131,27 @@ public class SupportMail extends DialogFragment {
             if (mButtonContainer != null && mConstruct.getButtonConfig().size() > 0) {
 
                 // Iterate through config, and setup the button states
-                SparseArray<Delivery.ButtonConfig> config = mConstruct.getButtonConfig();
-                int N = config.size();
+                HashMap<Integer, Delivery.ButtonConfig> config = mConstruct.getButtonConfig();
+                List<Integer> keys = new ArrayList<>(config.keySet());
+
+                // Only sort if set to
+                if(mConstruct.isProperlySortingMaterialButton())
+                    Collections.sort(keys, mButtonComparator);
+
+                int N = keys.size();
                 for (int i = 0; i < N; i++) {
-                    final int key = config.keyAt(i);
+                    final int key = keys.get(i);
                     final Delivery.ButtonConfig cfg = config.get(key);
 
                     // Pull button Color
                     int textColor = mConstruct.getButtonTextColor(key);
 
                     // Create and add buttons (in order) to the button container
-                    RippleView button = (RippleView)getActivity().getLayoutInflater().inflate(mConstruct.getDesign().isLight() ? R.layout.material_light_dialog_button : R.layout.material_dark_dialog_button, null, false);
+                    RippleView button = (RippleView)getActivity().getLayoutInflater()
+                            .inflate(mConstruct.getDesign().isLight() ?
+                                    R.layout.material_light_dialog_button :
+                                    R.layout.material_dark_dialog_button, null, false);
+
                     FontLoader.applyTypeface(button, Types.ROBOTO_MEDIUM);
                     button.setId(key);
                     button.setText(cfg.title);
@@ -380,10 +396,11 @@ public class SupportMail extends DialogFragment {
         if(!delivery.getDesign().isMaterial()){
 
             // Iterate through config, and setup the button states
-            SparseArray<Delivery.ButtonConfig> config = delivery.getButtonConfig();
+            HashMap<Integer, Delivery.ButtonConfig> config = delivery.getButtonConfig();
+            List<Integer> keys = new ArrayList<>(config.keySet());
             int N = config.size();
             for(int i=0; i<N; i++){
-                int key = config.keyAt(i);
+                int key = keys.get(i);
                 final Delivery.ButtonConfig cfg = config.get(key);
 
                 // Pull button Color
@@ -442,31 +459,41 @@ public class SupportMail extends DialogFragment {
     }
 
     /**
-     * Apply kerning to a string
-     *
-     * @param src       the source string
-     * @param kerning   the amount of kerning
-     * @return          the spannable output
+     * The button sorting comparator based on the priority from
+     * {@link #getButtonPriority(Integer)} function
      */
-    public static Spannable applyKerning(CharSequence src, float kerning){
-        if (src == null) return null;
-        final int srcLength = src.length();
-        if (srcLength < 2) return src instanceof Spannable
-                ? (Spannable)src
-                : new SpannableString(src);
-
-        final String nonBreakingSpace = "\u00A0";
-        final SpannableStringBuilder builder = src instanceof SpannableStringBuilder
-                ? (SpannableStringBuilder)src
-                : new SpannableStringBuilder(src);
-        for (int i = src.length() - 1; i >= 1; i--)
-        {
-            builder.insert(i, nonBreakingSpace);
-            builder.setSpan(new ScaleXSpan(kerning), i, i + 1,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    private Comparator<Integer> mButtonComparator = new Comparator<Integer>() {
+        @Override
+        public int compare(Integer lhs, Integer rhs) {
+            /*
+             * Sort Order
+             * 1) Dialog.BUTTON_POSITIVE = -1
+             * 2) Dialog.BUTTON_NEUTRAL = -3
+             * 3) Dialog.BUTTON_NEGATIVE = -2
+             */
+            Integer lhsPriority = getButtonPriority(lhs);
+            Integer rhsPriority = getButtonPriority(rhs);
+            return lhsPriority.compareTo(rhsPriority);
         }
+    };
 
-        return builder;
+    /**
+     * Get the proper button sorting priority
+     *
+     * @param button        the button constant
+     * @return              the sorting order
+     */
+    private Integer getButtonPriority(Integer button){
+        switch (button){
+            case Dialog.BUTTON_POSITIVE:
+                return 1;
+            case Dialog.BUTTON_NEUTRAL:
+                return 2;
+            case Dialog.BUTTON_NEGATIVE:
+                return 3;
+            default:
+                return 0;
+        }
     }
 
 }

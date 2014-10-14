@@ -13,6 +13,8 @@ import com.r0adkll.postoffice.styles.Style;
 import com.r0adkll.postoffice.ui.Mail;
 import com.r0adkll.postoffice.ui.SupportMail;
 
+import java.util.HashMap;
+
 /**
  * This is the main construct that contains all the configuration data needed
  * to construct a dialog.
@@ -41,8 +43,9 @@ public class Delivery {
     private int mAutoLinkMask = 0;
     private MovementMethod mMovementMethod = null;
 
-    private SparseArray<ButtonConfig> mButtonMap;
+    private HashMap<Integer, Delivery.ButtonConfig> mButtonMap;
     private SparseIntArray mButtonTextColorMap;
+    private boolean mProperSortButtons = true;
 
     private boolean mShowKeyboardOnDisplay;
     private boolean mCancelable;
@@ -62,7 +65,7 @@ public class Delivery {
      */
     private Delivery(Context ctx){
         mCtx = ctx;
-        mButtonMap = new SparseArray<>();
+        mButtonMap = new HashMap<>();
         mButtonTextColorMap = new SparseIntArray();
     }
 
@@ -204,8 +207,18 @@ public class Delivery {
      *
      * @return      the map of button config
      */
-    public SparseArray<ButtonConfig> getButtonConfig(){
+    public HashMap<Integer, ButtonConfig> getButtonConfig(){
         return mButtonMap;
+    }
+
+    /**
+     * Return whether or not to properly sort the buttons in the material design dialogs
+     * in the order of: POSITIVE, NEUTRAL, NEGATIVE
+     *
+     * @return      true if we should properly sort the dialog buttons, false if its FIFO
+     */
+    public boolean isProperlySortingMaterialButton(){
+        return mProperSortButtons;
     }
 
     /**
@@ -667,6 +680,23 @@ public class Delivery {
          */
         public Builder setButtonTextColor(int whichButton, int color){
             delivery.mButtonTextColorMap.put(whichButton, ctx.getResources().getColor(color));
+            return this;
+        }
+
+        /**
+         * Set whether we should sort the buttons based on priority:
+         *
+         *  Dialog.BUTTON_POSITIVE
+         *  Dialog.BUTTON_NEUTRAL
+         *  Dialog.BUTTON_NEGATIVE
+         *
+         * CAVEAT: This is only applied to material design buttons
+         *
+         * @param sort      flag to sort
+         * @return          self for chaining
+         */
+        public Builder setShouldProperlySortButtons(boolean sort){
+            delivery.mProperSortButtons = sort;
             return this;
         }
 

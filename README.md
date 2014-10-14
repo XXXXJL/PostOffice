@@ -29,6 +29,9 @@ Call one of the simpler quick call items;
 			.setIcon(Integer)
 			
 			.setButton(Integer, <CharSequence, Integer>, DialogInterface.OnClickListener)
+			.setButtonTextColor(Integer, ColorResourseId)
+			.setShouldProperlySortButtons(Boolean)
+
 			.setThemeColor(int color)
 			.setThemeColorFromResource(int colorResId)
 			

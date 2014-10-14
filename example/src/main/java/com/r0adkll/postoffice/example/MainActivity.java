@@ -194,7 +194,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
                         .setDesign(mtrlDesign)
                         .setCanceledOnTouchOutside(true)
                         .setCancelable(true)
-                        .setButton(Dialog.BUTTON_POSITIVE, "Dispatch Load", new DialogInterface.OnClickListener() {
+                        .setButton(Dialog.BUTTON_NEUTRAL, "Maybe", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 // Do something with teh clicks
@@ -202,7 +202,13 @@ public class MainActivity extends Activity implements View.OnClickListener{
                                 dialog.dismiss();
                             }
                         })
-                        .setButton(Dialog.BUTTON_NEGATIVE, "Unload your holy fury", new DialogInterface.OnClickListener() {
+                        .setButton(Dialog.BUTTON_NEGATIVE, "Definitely Not", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setButton(Dialog.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();

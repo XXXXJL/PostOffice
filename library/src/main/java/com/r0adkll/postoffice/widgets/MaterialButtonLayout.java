@@ -3,7 +3,9 @@ package com.r0adkll.postoffice.widgets;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 /**
@@ -21,6 +23,7 @@ public class MaterialButtonLayout extends LinearLayout {
      */
 
     private float MAX_BUTTON_WIDTH;
+    private float MIN_BUTTON_WIDTH;
 
     /***********************************************************************************************
      *
@@ -49,6 +52,7 @@ public class MaterialButtonLayout extends LinearLayout {
      */
     private void init(){
         MAX_BUTTON_WIDTH = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 124f, getResources().getDisplayMetrics());
+        MIN_BUTTON_WIDTH = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 88f, getResources().getDisplayMetrics());
     }
 
     /**
@@ -66,15 +70,20 @@ public class MaterialButtonLayout extends LinearLayout {
             for (int i = 0; i < N; i++) {
 
                 View child = getChildAt(i);
+                int width = child.getWidth();
+                if (width > MAX_BUTTON_WIDTH || (N>=3 && width > MIN_BUTTON_WIDTH)) {
 
-                    int width = child.getWidth();
-                    if (width > MAX_BUTTON_WIDTH) {
-
-                        // Switch orientation
-                        setOrientation(VERTICAL);
-                        requestLayout();
-
+                    // Update the children's params
+                    for (int j = 0; j < N; j++) {
+                        Button chd = (Button) getChildAt(j);
+                        chd.setGravity(Gravity.END|Gravity.CENTER_VERTICAL);
                     }
+
+                    // Switch orientation
+                    setOrientation(VERTICAL);
+                    requestLayout();
+                    return;
+                }
 
 
             }
