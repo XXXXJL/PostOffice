@@ -202,7 +202,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
                                 dialog.dismiss();
                             }
                         })
-                        .setButton(Dialog.BUTTON_NEGATIVE, "Definitely Not", new DialogInterface.OnClickListener() {
+                        .setButton(Dialog.BUTTON_NEGATIVE, "No", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
@@ -214,6 +214,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
                                 dialog.dismiss();
                             }
                         })
+                        .setShouldProperlySortButtons(true)
                         .build();
                 break;
 

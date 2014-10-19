@@ -26,7 +26,6 @@
         <item name="android:textAllCaps">true</item>
         <item name="android:paddingLeft">@dimen/default_margin</item>
         <item name="android:paddingRight">@dimen/default_margin</item>
-        <!--<item name="android:background">@drawable/material_light_button_selector</item>-->
     </style>
 
 
@@ -55,7 +54,6 @@
         <item name="android:textAllCaps">true</item>
         <item name="android:paddingLeft">@dimen/default_margin</item>
         <item name="android:paddingRight">@dimen/default_margin</item>
-        <!--<item name="android:background">@drawable/material_dark_button_selector</item>-->
     </style>
 
     <!--

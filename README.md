@@ -146,7 +146,7 @@ Add this line to your gradle dependencies
 
 ## Attribution
 
--	[RippleView](https://github.com/siriscac/RippleView) - Muthuramakrishnan - [siriscac@gmail.com](mailto:siriscac@gmail.com)
+-	[RippleEffect](https://github.com/traex/RippleEffect) - Robin Chutaux - MIT License
 	-	Used to produce the ripple affect on Material dialogs
 
 

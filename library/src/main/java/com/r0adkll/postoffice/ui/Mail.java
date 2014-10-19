@@ -6,6 +6,7 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -20,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -27,20 +29,19 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.andexert.library.RippleView;
 import com.ftinc.fontloader.FontLoader;
 import com.ftinc.fontloader.Types;
 import com.r0adkll.postoffice.R;
 import com.r0adkll.postoffice.model.Delivery;
 import com.r0adkll.postoffice.styles.EditTextStyle;
 import com.r0adkll.postoffice.styles.Style;
-import com.r0adkll.postoffice.widgets.RippleView;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Project: PostOffice
@@ -70,6 +71,8 @@ public class Mail extends DialogFragment {
      * Constants
      *
      */
+
+    private static final long DELAY_BUFFER = 50;
 
     /**********************************************************
      *
@@ -149,23 +152,34 @@ public class Mail extends DialogFragment {
                     // Pull button Color
                     int textColor = mConstruct.getButtonTextColor(key);
 
-                    // Create and add buttons (in order) to the button container
+                    // Inflate the RippleView wrapped Button based on design
                     RippleView button = (RippleView)getActivity().getLayoutInflater()
                             .inflate(mConstruct.getDesign().isLight() ?
                                     R.layout.material_light_dialog_button :
                                     R.layout.material_dark_dialog_button, null, false);
 
-                    FontLoader.applyTypeface(button, Types.ROBOTO_MEDIUM);
-                    button.setId(key);
-                    button.setText(cfg.title);
-                    if(textColor != 0) button.setTextColor(textColor);
-                    button.setOnClickListener(new View.OnClickListener() {
+                    // Load the Button from the ripple view
+                    Button rippleButton = (Button) button.findViewById(R.id.ripple_button);
+
+                    // Apply parameters to the button
+                    FontLoader.applyTypeface(rippleButton, Types.ROBOTO_MEDIUM);
+                    rippleButton.setId(key);
+                    rippleButton.setText(cfg.title);
+                    if(textColor != 0) rippleButton.setTextColor(textColor);
+                    rippleButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            cfg.listener.onClick(getDialog(), key);
-                            if(mConstruct.getStyle() != null){
-                                mConstruct.getStyle().onButtonClicked(key, getDialog());
-                            }
+                            long delay = getResources()
+                                    .getInteger(R.integer.ripple_duration) + DELAY_BUFFER;
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    cfg.listener.onClick(getDialog(), key);
+                                    if(mConstruct.getStyle() != null){
+                                        mConstruct.getStyle().onButtonClicked(key, getDialog());
+                                    }
+                                }
+                            }, delay);
                         }
                     });
 
