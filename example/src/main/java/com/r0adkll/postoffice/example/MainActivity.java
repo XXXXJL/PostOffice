@@ -194,7 +194,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
                         .setDesign(mtrlDesign)
                         .setCanceledOnTouchOutside(true)
                         .setCancelable(true)
-                        .setButton(Dialog.BUTTON_NEUTRAL, "Maybe", new DialogInterface.OnClickListener() {
+                        .setButton(Dialog.BUTTON_NEUTRAL, "maybe", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 // Do something with teh clicks
@@ -202,13 +202,13 @@ public class MainActivity extends Activity implements View.OnClickListener{
                                 dialog.dismiss();
                             }
                         })
-                        .setButton(Dialog.BUTTON_NEGATIVE, "No", new DialogInterface.OnClickListener() {
+                        .setButton(Dialog.BUTTON_NEGATIVE, android.R.string.cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
                             }
                         })
-                        .setButton(Dialog.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
+                        .setButton(Dialog.BUTTON_POSITIVE, android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
