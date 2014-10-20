@@ -8,6 +8,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.andexert.library.RippleView;
+import com.r0adkll.postoffice.R;
+import com.r0adkll.postoffice.model.Delivery;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The material design button layout is to automatically switch to a horizontal orientation
  * if one of the buttons is greater than the 124dp maximum width.
@@ -24,6 +31,8 @@ public class MaterialButtonLayout extends LinearLayout {
 
     private float MAX_BUTTON_WIDTH;
     private float MIN_BUTTON_WIDTH;
+
+    private Delivery mConstruct;
 
     /***********************************************************************************************
      *
@@ -56,6 +65,15 @@ public class MaterialButtonLayout extends LinearLayout {
     }
 
     /**
+     * Set the delivery configuration
+     *
+     * @param delivery      the delivery construct
+     */
+    public void setConfiguration(Delivery delivery){
+        mConstruct = delivery;
+    }
+
+    /**
      * if we detect that one of the dialog buttons are greater
      * than the max horizontal layout width of 124dp then to switch the
      * orientation to {@link #VERTICAL}
@@ -73,10 +91,29 @@ public class MaterialButtonLayout extends LinearLayout {
                 int width = child.getWidth();
                 if (width > MAX_BUTTON_WIDTH || (N>=3 && width > MIN_BUTTON_WIDTH)) {
 
+                    List<View> children = new ArrayList<>();
+
                     // Update the children's params
                     for (int j = 0; j < N; j++) {
-                        Button chd = (Button) getChildAt(j);
-                        chd.setGravity(Gravity.END|Gravity.CENTER_VERTICAL);
+                        RippleView chd = (RippleView) getChildAt(j);
+                        Button btn = (Button) chd.getChildAt(0);
+                        btn.setGravity(Gravity.END|Gravity.CENTER_VERTICAL);
+
+                        if(mConstruct.isProperlySortingMaterialButton()){
+                            // Remove button and add to list to be reordered
+                            children.add(chd);
+                        }
+                    }
+
+                    // If the construct is proper ordering, reverse order the buttons
+                    if(mConstruct.isProperlySortingMaterialButton()) {
+                        // Clear out the chitlens
+                        removeAllViews();
+
+                        for (int j = children.size() - 1; j >= 0; j--) {
+                            View chd = children.get(j);
+                            addView(chd);
+                        }
                     }
 
                     // Switch orientation

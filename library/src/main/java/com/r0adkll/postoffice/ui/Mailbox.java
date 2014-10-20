@@ -30,6 +30,7 @@ import com.r0adkll.postoffice.R;
 import com.r0adkll.postoffice.model.Delivery;
 import com.r0adkll.postoffice.styles.EditTextStyle;
 import com.r0adkll.postoffice.styles.Style;
+import com.r0adkll.postoffice.widgets.MaterialButtonLayout;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -86,7 +87,7 @@ public class Mailbox {
     private TextView mMessage;
     private LinearLayout mContentFrame;
     private FrameLayout mStyleContent;
-    private LinearLayout mButtonContainer;
+    private MaterialButtonLayout mButtonContainer;
     private ScrollView mMessageScrollview;
 
     /**
@@ -246,12 +247,16 @@ public class Mailbox {
                     view = inflater.inflate(R.layout.layout_material_dark_dialog, container, false);
                 }
 
+                // Inflate the views
                 mTitle = (TextView) view.findViewById(R.id.title);
                 mMessage = (TextView) view.findViewById(R.id.message);
                 mMessageScrollview = (ScrollView) view.findViewById(R.id.message_scrollview);
                 mContentFrame = (LinearLayout) view.findViewById(R.id.content_frame);
                 mStyleContent = (FrameLayout) view.findViewById(R.id.style_content);
-                mButtonContainer = (LinearLayout) view.findViewById(R.id.button_container);
+                mButtonContainer = (MaterialButtonLayout) view.findViewById(R.id.button_container);
+
+                // Attach the construct to the button container
+                mButtonContainer.setConfiguration(mConstruct);
             }else{
                 view = null;
             }
