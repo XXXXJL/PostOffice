@@ -27,6 +27,7 @@ import com.r0adkll.postoffice.model.Design;
 
 /**
  * Created by r0adkll on 8/21/14.
+ * @deprecated  This is an anti-pattern, so it will no longer be supported
  */
 public class ProgressStyle implements Style {
 
@@ -67,6 +68,7 @@ public class ProgressStyle implements Style {
      * Constructor
      *
      * @param ctx
+     * @deprecated  This is an anti-pattern, so it will no longer be supported
      */
     public ProgressStyle(Context ctx){
         mCtx = ctx;
