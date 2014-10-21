@@ -288,65 +288,43 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 tag = "PROGRESS_HOLO";
                 delivery = PostOffice.newMail(this)
                         .setTitle("Downloading")
-                        .setMessage("Your download is currently in progress. Please wait.")
+//                        .setMessage("Your download is currently in progress. Please wait.")
                         .setThemeColor(getColor())
                         .setDesign(holoDesign)
                         .setCancelable(false)
                         .setCanceledOnTouchOutside(false)
+
                         .setStyle(new ProgressStyle.Builder(this)
-                                        .setSuffix("mb")
                                         .setIndeterminate(true)
-                                        .setPercentageMode(true)
+                                        .setProgressStyle(ProgressStyle.HORIZONTAL)
                                         .build())
+
                         .setCancelable(true)
                         .setCanceledOnTouchOutside(true)
                         .build();
 
-                ProgressStyle style = (ProgressStyle) delivery.getStyle();
-                style.setIndeterminate(true);
-                style.setProgress(1);
-                style.setMax(1);
+//                ProgressStyle style = (ProgressStyle) delivery.getStyle();
+//                style.setIndeterminate(true);
+//                style.setProgress(1);
+//                style.setMax(1);
 
                 break;
             case R.id.progress_material:
                 tag = "PROGRESS_MATERIAL";
                 delivery = PostOffice.newMail(this)
-                        .setTitle("Downloading")
-                        .setMessage("Your download is currently in progress. Please wait.")
+//                        .setTitle("Downloading")
+//                        .setMessage("Your download is currently in progress. Please wait.")
                         .setThemeColor(getColor())
                         .setDesign(mtrlDesign)
+
                         .setStyle(new ProgressStyle.Builder(this)
-                                .setSuffix("mb")
-                                .setIndeterminate(false)
-                                .setCloseOnFinish(true)
+                                .setProgressStyle(ProgressStyle.NORMAL)
+                                .setProgressMessage("Your content is loading...")
                                 .build())
+
                         .setCancelable(true)
                         .setCanceledOnTouchOutside(true)
                         .build();
-
-                final int max2 = 256;
-                final Delivery finalDelivery2 = delivery;
-                new Handler().post(new Runnable() {
-
-                    int progress = 0;
-
-                    @Override
-                    public void run() {
-
-                        progress += 16;
-
-                        // Get Progress style
-                        ProgressStyle style = (ProgressStyle) finalDelivery2.getStyle();
-                        style.setProgress(progress);
-                        style.setMax(max2);
-
-                        if(progress < max2){
-                            new Handler().postDelayed(this, 300);
-                        }
-
-
-                    }
-                });
 
                 break;
 
