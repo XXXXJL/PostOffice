@@ -33,6 +33,7 @@ public class MaterialButtonLayout extends LinearLayout {
     private float MIN_BUTTON_WIDTH;
 
     private Delivery mConstruct;
+    private List<View> children = new ArrayList<>();
 
     /***********************************************************************************************
      *
@@ -91,7 +92,8 @@ public class MaterialButtonLayout extends LinearLayout {
                 int width = child.getWidth();
                 if (width > MAX_BUTTON_WIDTH || (N>=3 && width > MIN_BUTTON_WIDTH)) {
 
-                    List<View> children = new ArrayList<>();
+                    // Clear out the children list in preparation for new manipulation
+                    children.clear();
 
                     // Update the children's params
                     for (int j = 0; j < N; j++) {

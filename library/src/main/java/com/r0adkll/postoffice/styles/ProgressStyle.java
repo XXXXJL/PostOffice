@@ -119,7 +119,7 @@ public class ProgressStyle implements Style {
             mProgress.setProgressDrawable(drawable);
 
             // Style the indeterminate drawable color
-            Drawable animDrawable = (Drawable) mProgress.getIndeterminateDrawable();
+            Drawable animDrawable = mProgress.getIndeterminateDrawable();
             animDrawable.setColorFilter(themeColor, PorterDuff.Mode.SRC_ATOP);
 
         }
