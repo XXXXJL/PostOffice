@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Spannable;
@@ -140,6 +141,13 @@ public class Mailbox {
                 // Iterate through config, and setup the button states
                 HashMap<Integer, Delivery.ButtonConfig> config = mConstruct.getButtonConfig();
                 List<Integer> keys = new ArrayList<>(config.keySet());
+
+                // Fix for issue #18, Lollipop handles Set<> collections differently than older
+                // versions of android and for some reason when we adapt the keyset to an array
+                // list it reverses the added order of the buttons. So for now we will just
+                // reverse the list when the device is lollipop
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    Collections.reverse(keys);
 
                 // Only sort if set to
                 if(mConstruct.isProperlySortingMaterialButton())

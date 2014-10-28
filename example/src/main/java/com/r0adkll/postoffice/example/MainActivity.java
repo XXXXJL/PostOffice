@@ -214,7 +214,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
                                 dialog.dismiss();
                             }
                         })
-                        .setShouldProperlySortButtons(true)
+                        .setShouldProperlySortButtons(false)
                         .build();
                 break;
 
