@@ -1,45 +1,14 @@
 package com.r0adkll.postoffice.ui;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.DialogFragment;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.ScaleXSpan;
-import android.util.SparseArray;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
 
-import com.andexert.library.RippleView;
-import com.ftinc.fontloader.FontLoader;
-import com.ftinc.fontloader.Types;
-import com.r0adkll.postoffice.R;
 import com.r0adkll.postoffice.model.Delivery;
-import com.r0adkll.postoffice.styles.EditTextStyle;
-import com.r0adkll.postoffice.styles.Style;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * Project: PostOffice
@@ -86,12 +55,24 @@ public class SupportMail extends DialogFragment implements MailboxInterface{
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        // Safety check the Mailbox interface to ensure that it isn't null
+        if(mMailbox == null){
+            dismiss();
+            return;
+        }
+
         mMailbox.onActivityCreated(savedInstanceState);
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Safety check the Mailbox interface to ensure that it isn't null
+        if(mMailbox == null){
+            dismiss();
+            return null;
+        }
+
         View layout = mMailbox.onCreateView(inflater, container, savedInstanceState);
         if(layout == null)
             layout = super.onCreateView(inflater, container, savedInstanceState);
@@ -102,6 +83,12 @@ public class SupportMail extends DialogFragment implements MailboxInterface{
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        // Safety check the Mailbox interface to ensure that it isn't null
+        if(mMailbox == null){
+            dismiss();
+            return null;
+        }
+
         return mMailbox.onCreateDialog(savedInstanceState);
     }
 

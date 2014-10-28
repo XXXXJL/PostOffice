@@ -55,12 +55,25 @@ public class Mail extends DialogFragment implements MailboxInterface{
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        // Safety check the Mailbox interface to ensure that it isn't null
+        if(mMailbox == null){
+            dismiss();
+            return;
+        }
+
+
         mMailbox.onActivityCreated(savedInstanceState);
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Safety check the Mailbox interface to ensure that it isn't null
+        if(mMailbox == null){
+            dismiss();
+            return null;
+        }
+
         View layout = mMailbox.onCreateView(inflater, container, savedInstanceState);
         if(layout == null)
             layout = super.onCreateView(inflater, container, savedInstanceState);
@@ -71,6 +84,12 @@ public class Mail extends DialogFragment implements MailboxInterface{
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        // Safety check the Mailbox interface to ensure that it isn't null
+        if(mMailbox == null){
+            dismiss();
+            return null;
+        }
+
         return mMailbox.onCreateDialog(savedInstanceState);
     }
 
