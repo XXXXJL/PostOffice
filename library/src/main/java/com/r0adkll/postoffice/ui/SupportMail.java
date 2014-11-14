@@ -35,6 +35,7 @@ import com.r0adkll.postoffice.R;
 import com.r0adkll.postoffice.model.Delivery;
 import com.r0adkll.postoffice.styles.EditTextStyle;
 import com.r0adkll.postoffice.styles.Style;
+import com.r0adkll.postoffice.widgets.MaterialButtonLayout;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -85,7 +86,7 @@ public class SupportMail extends DialogFragment {
     private TextView mMessage;
     private LinearLayout mContentFrame;
     private FrameLayout mStyleContent;
-    private LinearLayout mButtonContainer;
+    private MaterialButtonLayout mButtonContainer;
     private ScrollView mMessageScrollview;
 
     private Delivery mConstruct;
@@ -119,7 +120,7 @@ public class SupportMail extends DialogFragment {
 
                     // Add padding to the message
                     int padding = getResources().getDimensionPixelSize(R.dimen.material_spacing);
-                    mContentFrame.setPadding(0, padding, 0, 0);
+                    mMessage.setPadding(0, padding, 0, 0);
                 }
 
                 if (mConstruct.getMessage() != null) {
@@ -260,7 +261,10 @@ public class SupportMail extends DialogFragment {
                 mMessageScrollview = (ScrollView) view.findViewById(R.id.message_scrollview);
                 mContentFrame = (LinearLayout) view.findViewById(R.id.content_frame);
                 mStyleContent = (FrameLayout) view.findViewById(R.id.style_content);
-                mButtonContainer = (LinearLayout) view.findViewById(R.id.button_container);
+                mButtonContainer = (MaterialButtonLayout) view.findViewById(R.id.button_container);
+
+                // Attach the construct to the button container
+                mButtonContainer.setConfiguration(mConstruct);
             }else{
                 view = super.onCreateView(inflater, container, savedInstanceState);
             }

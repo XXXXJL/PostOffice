@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.text.TextWatcher;
@@ -65,11 +66,11 @@ public class EditTextStyle implements Style {
         else
             mInputField.setTextColor(mInputField.getResources().getColor(R.color.background_material_light));
 
-        StateListDrawable drawable;
+        Drawable drawable;
         if(design.isMaterial()) {
-            drawable = (StateListDrawable) mInputField.getResources().getDrawable(R.drawable.edittext_mtrl_alpha);
+            drawable = mInputField.getResources().getDrawable(R.drawable.edittext_mtrl_alpha);
         }else{
-            drawable = (StateListDrawable) mInputField.getBackground();
+            drawable = mInputField.getBackground();
         }
 
         drawable.setColorFilter(themeColor, PorterDuff.Mode.SRC_ATOP);

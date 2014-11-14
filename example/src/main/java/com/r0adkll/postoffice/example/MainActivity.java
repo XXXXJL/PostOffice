@@ -74,6 +74,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     @InjectView(R.id.alert_material)            Button mAlertMaterial;
     @InjectView(R.id.alert_material_no_title)   Button mAlertMaterialNoTitle;
     @InjectView(R.id.alert_material_mltpl_btns) Button mAlertMaterialMultipleButtons;
+    @InjectView(R.id.alert_material_btn_overflow)   Button mAlertMaterialButtonOverflow;
     @InjectView(R.id.edittext_holo)             Button mEdittextHolo;
     @InjectView(R.id.edittext_material)         Button mEdittextMaterial;
     @InjectView(R.id.progress_holo)             Button mProgressHolo;
@@ -102,6 +103,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         mAlertMaterial.setOnClickListener(this);
         mAlertMaterialNoTitle.setOnClickListener(this);
         mAlertMaterialMultipleButtons.setOnClickListener(this);
+        mAlertMaterialButtonOverflow.setOnClickListener(this);
         mEdittextHolo.setOnClickListener(this);
         mEdittextMaterial.setOnClickListener(this);
         mProgressHolo.setOnClickListener(this);
@@ -252,7 +254,34 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                         .build();
 
                 break;
+            case R.id.alert_material_btn_overflow:
+                tag = "ALERT_MATERIAL_BTN_OVERFLOW";
 
+                // Create and show holo alert style
+                delivery = PostOffice.newMail(this)
+                        .setTitle(R.string.mtrl_alert_title)
+                        .setThemeColor(getColor())
+                        .setMessage(Utils.getRandom().nextBoolean() ? R.string.message : R.string.message_long)
+                        .setDesign(mtrlDesign)
+                        .setCanceledOnTouchOutside(true)
+                        .setCancelable(true)
+                        .setButton(Dialog.BUTTON_NEGATIVE, "Prepare for battle", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setButton(Dialog.BUTTON_POSITIVE, "Retreat", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setShouldProperlySortButtons(false)
+                        .build();
+
+
+                break;
             case R.id.edittext_holo:
                 tag = "EDITTEXT_HOLO";
 
@@ -398,6 +427,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         // Show the delivery
         if(delivery != null)
             delivery.show(getFragmentManager(), tag);
+
     }
 
     /**
