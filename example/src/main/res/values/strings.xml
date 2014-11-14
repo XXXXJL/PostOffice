@@ -27,6 +27,7 @@
     <string name="action1">Ok</string>
     <string name="action2">cancel</string>
     <string name="mtrl_title">Edit Text Material Design</string>
-    <string name="mtrl_alert_title">Material holo title</string>
+    <string name="holo_alert_title">Holo Alert title</string>
+    <string name="mtrl_alert_title">Material Alert title</string>
 
 </resources>

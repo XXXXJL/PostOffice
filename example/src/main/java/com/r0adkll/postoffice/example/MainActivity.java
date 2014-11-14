@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.text.InputType;
 import android.text.method.LinkMovementMethod;
@@ -31,7 +32,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 
-public class MainActivity extends Activity implements View.OnClickListener{
+public class MainActivity extends ActionBarActivity implements View.OnClickListener{
 
     public static final String PREF_NAME = "PostOfficeExample.prefs";
     public static final String PREF_THEME = "pref_theme";
@@ -69,15 +70,17 @@ public class MainActivity extends Activity implements View.OnClickListener{
             "Ultra Humanite"
     };
 
-    @InjectView(R.id.alert_holo)            Button mAlertHolo;
-    @InjectView(R.id.alert_material)        Button mAlertMaterial;
-    @InjectView(R.id.edittext_holo)         Button mEdittextHolo;
-    @InjectView(R.id.edittext_material)     Button mEdittextMaterial;
-    @InjectView(R.id.progress_holo)         Button mProgressHolo;
-    @InjectView(R.id.progress_material)     Button mProgressMaterial;
-    @InjectView(R.id.list_holo)             Button mListHolo;
-    @InjectView(R.id.list_material)         Button mListMaterial;
-    @InjectView(R.id.theme_color)           View mThemeColor;
+    @InjectView(R.id.alert_holo)                Button mAlertHolo;
+    @InjectView(R.id.alert_material)            Button mAlertMaterial;
+    @InjectView(R.id.alert_material_no_title)   Button mAlertMaterialNoTitle;
+    @InjectView(R.id.alert_material_mltpl_btns) Button mAlertMaterialMultipleButtons;
+    @InjectView(R.id.edittext_holo)             Button mEdittextHolo;
+    @InjectView(R.id.edittext_material)         Button mEdittextMaterial;
+    @InjectView(R.id.progress_holo)             Button mProgressHolo;
+    @InjectView(R.id.progress_material)         Button mProgressMaterial;
+    @InjectView(R.id.list_holo)                 Button mListHolo;
+    @InjectView(R.id.list_material)             Button mListMaterial;
+    @InjectView(R.id.theme_color)               View mThemeColor;
 
     private SharedPreferences mPrefs;
 
@@ -97,6 +100,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
         mAlertHolo.setOnClickListener(this);
         mAlertMaterial.setOnClickListener(this);
+        mAlertMaterialNoTitle.setOnClickListener(this);
+        mAlertMaterialMultipleButtons.setOnClickListener(this);
         mEdittextHolo.setOnClickListener(this);
         mEdittextMaterial.setOnClickListener(this);
         mProgressHolo.setOnClickListener(this);
@@ -130,6 +135,11 @@ public class MainActivity extends Activity implements View.OnClickListener{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
+            case R.id.action_support:
+                Intent support = new Intent(this, SupportMainActivity.class);
+                startActivity(support);
+                finish();
+                return true;
             case R.id.action_theme:
                 // Toggle preference
                 mPrefs.edit().putBoolean(PREF_THEME, !isLight()).commit();
@@ -194,6 +204,30 @@ public class MainActivity extends Activity implements View.OnClickListener{
                         .setDesign(mtrlDesign)
                         .setCanceledOnTouchOutside(true)
                         .setCancelable(true)
+                        .build();
+
+                break;
+            case R.id.alert_material_no_title:
+                tag = "ALERT_MATERIAL_NO_TITLE";
+                delivery = PostOffice.newMail(this)
+                        .setThemeColor(getColor())
+                        .setMessage(Utils.getRandom().nextBoolean() ? R.string.message : R.string.message_long)
+                        .setDesign(mtrlDesign)
+                        .setCanceledOnTouchOutside(true)
+                        .setCancelable(true)
+                        .build();
+
+                break;
+            case R.id.alert_material_mltpl_btns:
+                tag = "ALERT_MATERIAL_MULTIPLE_BUTTONS";
+                // Create and show holo alert style
+                delivery = PostOffice.newMail(this)
+                        .setTitle(R.string.mtrl_alert_title)
+                        .setThemeColor(getColor())
+                        .setMessage(Utils.getRandom().nextBoolean() ? R.string.message : R.string.message_long)
+                        .setDesign(mtrlDesign)
+                        .setCanceledOnTouchOutside(true)
+                        .setCancelable(true)
                         .setButton(Dialog.BUTTON_NEUTRAL, "maybe", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -216,6 +250,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
                         })
                         .setShouldProperlySortButtons(false)
                         .build();
+
                 break;
 
             case R.id.edittext_holo:
@@ -239,14 +274,14 @@ public class MainActivity extends Activity implements View.OnClickListener{
                             }
                         })
                         .setStyle(new EditTextStyle.Builder(this)
-                                        .setHint("Email")
-                                        .setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
-                                        .setOnTextAcceptedListener(new EditTextStyle.OnTextAcceptedListener() {
-                                            @Override
-                                            public void onAccepted(String text) {
-                                                Toast.makeText(MainActivity.this, "Text was accepted: " + text, Toast.LENGTH_SHORT).show();
-                                            }
-                                        }).build())
+                                .setHint("Email")
+                                .setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
+                                .setOnTextAcceptedListener(new EditTextStyle.OnTextAcceptedListener() {
+                                    @Override
+                                    public void onAccepted(String text) {
+                                        Toast.makeText(MainActivity.this, "Text was accepted: " + text, Toast.LENGTH_SHORT).show();
+                                    }
+                                }).build())
                         .build();
 
                 break;
@@ -295,9 +330,9 @@ public class MainActivity extends Activity implements View.OnClickListener{
                         .setCanceledOnTouchOutside(false)
 
                         .setStyle(new ProgressStyle.Builder(this)
-                                        .setIndeterminate(true)
-                                        .setProgressStyle(ProgressStyle.HORIZONTAL)
-                                        .build())
+                                .setIndeterminate(true)
+                                .setProgressStyle(ProgressStyle.HORIZONTAL)
+                                .build())
 
                         .setCancelable(true)
                         .setCanceledOnTouchOutside(true)

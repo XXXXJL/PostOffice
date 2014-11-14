@@ -11,6 +11,6 @@
 
     <item
         android:id="@+id/action_support"
-        android:title="Switch to Support"/>
+        android:title="Switch to Regular"/>
 
 </menu>

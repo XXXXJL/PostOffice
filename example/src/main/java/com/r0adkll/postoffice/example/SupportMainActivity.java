@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.r0adkll.deadskunk.utils.Utils;
 import com.r0adkll.postoffice.PostOffice;
 import com.r0adkll.postoffice.model.Delivery;
 import com.r0adkll.postoffice.model.Design;
@@ -27,7 +29,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 
-public class SupportMainActivity extends FragmentActivity implements View.OnClickListener{
+public class SupportMainActivity extends ActionBarActivity implements View.OnClickListener{
 
     public static final String PREF_NAME = "PostOfficeExample.prefs";
     public static final String PREF_THEME = "pref_theme";
@@ -65,15 +67,17 @@ public class SupportMainActivity extends FragmentActivity implements View.OnClic
             "Ultra Humanite"
     };
 
-    @InjectView(R.id.alert_holo)            Button mAlertHolo;
-    @InjectView(R.id.alert_material)        Button mAlertMaterial;
-    @InjectView(R.id.edittext_holo)         Button mEdittextHolo;
-    @InjectView(R.id.edittext_material)     Button mEdittextMaterial;
-    @InjectView(R.id.progress_holo)         Button mProgressHolo;
-    @InjectView(R.id.progress_material)     Button mProgressMaterial;
-    @InjectView(R.id.list_holo)             Button mListHolo;
-    @InjectView(R.id.list_material)         Button mListMaterial;
-    @InjectView(R.id.theme_color)           View mThemeColor;
+    @InjectView(R.id.alert_holo)                Button mAlertHolo;
+    @InjectView(R.id.alert_material)            Button mAlertMaterial;
+    @InjectView(R.id.alert_material_no_title)   Button mAlertMaterialNoTitle;
+    @InjectView(R.id.alert_material_mltpl_btns) Button mAlertMaterialMultipleButtons;
+    @InjectView(R.id.edittext_holo)             Button mEdittextHolo;
+    @InjectView(R.id.edittext_material)         Button mEdittextMaterial;
+    @InjectView(R.id.progress_holo)             Button mProgressHolo;
+    @InjectView(R.id.progress_material)         Button mProgressMaterial;
+    @InjectView(R.id.list_holo)                 Button mListHolo;
+    @InjectView(R.id.list_material)             Button mListMaterial;
+    @InjectView(R.id.theme_color)               View mThemeColor;
 
     private SharedPreferences mPrefs;
 
@@ -93,6 +97,8 @@ public class SupportMainActivity extends FragmentActivity implements View.OnClic
 
         mAlertHolo.setOnClickListener(this);
         mAlertMaterial.setOnClickListener(this);
+        mAlertMaterialNoTitle.setOnClickListener(this);
+        mAlertMaterialMultipleButtons.setOnClickListener(this);
         mEdittextHolo.setOnClickListener(this);
         mEdittextMaterial.setOnClickListener(this);
         mProgressHolo.setOnClickListener(this);
@@ -119,13 +125,18 @@ public class SupportMainActivity extends FragmentActivity implements View.OnClic
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.support_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
+            case R.id.action_support:
+                Intent main = new Intent(this, MainActivity.class);
+                startActivity(main);
+                finish();
+                return true;
             case R.id.action_theme:
                 // Toggle preference
                 mPrefs.edit().putBoolean(PREF_THEME, !isLight()).commit();
@@ -186,10 +197,35 @@ public class SupportMainActivity extends FragmentActivity implements View.OnClic
                 delivery = PostOffice.newMail(this)
                         .setTitle(R.string.mtrl_alert_title)
                         .setThemeColor(getColor())
-                        .setMessage(R.string.message)
+                        .setMessage(Utils.getRandom().nextBoolean() ? R.string.message : R.string.message_long)
                         .setDesign(mtrlDesign)
-                        .setCanceledOnTouchOutside(false)
-                        .setButton(Dialog.BUTTON_POSITIVE, R.string.action1, new DialogInterface.OnClickListener() {
+                        .setCanceledOnTouchOutside(true)
+                        .setCancelable(true)
+                        .build();
+
+                break;
+            case R.id.alert_material_no_title:
+                tag = "ALERT_MATERIAL_NO_TITLE";
+                delivery = PostOffice.newMail(this)
+                        .setThemeColor(getColor())
+                        .setMessage(Utils.getRandom().nextBoolean() ? R.string.message : R.string.message_long)
+                        .setDesign(mtrlDesign)
+                        .setCanceledOnTouchOutside(true)
+                        .setCancelable(true)
+                        .build();
+
+                break;
+            case R.id.alert_material_mltpl_btns:
+                tag = "ALERT_MATERIAL_MULTIPLE_BUTTONS";
+                // Create and show holo alert style
+                delivery = PostOffice.newMail(this)
+                        .setTitle(R.string.mtrl_alert_title)
+                        .setThemeColor(getColor())
+                        .setMessage(Utils.getRandom().nextBoolean() ? R.string.message : R.string.message_long)
+                        .setDesign(mtrlDesign)
+                        .setCanceledOnTouchOutside(true)
+                        .setCancelable(true)
+                        .setButton(Dialog.BUTTON_NEUTRAL, "maybe", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 // Do something with teh clicks
@@ -197,9 +233,22 @@ public class SupportMainActivity extends FragmentActivity implements View.OnClic
                                 dialog.dismiss();
                             }
                         })
+                        .setButton(Dialog.BUTTON_NEGATIVE, android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setButton(Dialog.BUTTON_POSITIVE, android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setShouldProperlySortButtons(false)
                         .build();
-                break;
 
+                break;
             case R.id.edittext_holo:
                 tag = "EDITTEXT_HOLO";
 
@@ -221,14 +270,14 @@ public class SupportMainActivity extends FragmentActivity implements View.OnClic
                             }
                         })
                         .setStyle(new EditTextStyle.Builder(this)
-                                        .setHint("Email")
-                                        .setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
-                                        .setOnTextAcceptedListener(new EditTextStyle.OnTextAcceptedListener() {
-                                            @Override
-                                            public void onAccepted(String text) {
-                                                Toast.makeText(SupportMainActivity.this, "Text was accepted: " + text, Toast.LENGTH_SHORT).show();
-                                            }
-                                        }).build())
+                                .setHint("Email")
+                                .setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
+                                .setOnTextAcceptedListener(new EditTextStyle.OnTextAcceptedListener() {
+                                    @Override
+                                    public void onAccepted(String text) {
+                                        Toast.makeText(SupportMainActivity.this, "Text was accepted: " + text, Toast.LENGTH_SHORT).show();
+                                    }
+                                }).build())
                         .build();
 
                 break;
@@ -269,63 +318,44 @@ public class SupportMainActivity extends FragmentActivity implements View.OnClic
             case R.id.progress_holo:
                 tag = "PROGRESS_HOLO";
                 delivery = PostOffice.newMail(this)
-                        .setTitle("Loading...")
+                        .setTitle("Downloading")
+//                        .setMessage("Your download is currently in progress. Please wait.")
                         .setThemeColor(getColor())
                         .setDesign(holoDesign)
                         .setCancelable(false)
                         .setCanceledOnTouchOutside(false)
+
                         .setStyle(new ProgressStyle.Builder(this)
-                                        .setSuffix("mb")
-                                        .setIndeterminate(true)
-                                        .setPercentageMode(true)
-                                        .build())
+                                .setIndeterminate(true)
+                                .setProgressStyle(ProgressStyle.HORIZONTAL)
+                                .build())
+
                         .setCancelable(true)
                         .setCanceledOnTouchOutside(true)
                         .build();
 
-                ProgressStyle style = (ProgressStyle) delivery.getStyle();
-                style.setIndeterminate(true);
-                style.setProgress(1);
-                style.setMax(1);
+//                ProgressStyle style = (ProgressStyle) delivery.getStyle();
+//                style.setIndeterminate(true);
+//                style.setProgress(1);
+//                style.setMax(1);
 
                 break;
             case R.id.progress_material:
                 tag = "PROGRESS_MATERIAL";
                 delivery = PostOffice.newMail(this)
+//                        .setTitle("Downloading")
+//                        .setMessage("Your download is currently in progress. Please wait.")
                         .setThemeColor(getColor())
                         .setDesign(mtrlDesign)
+
                         .setStyle(new ProgressStyle.Builder(this)
-                                .setSuffix("mb")
-                                .setIndeterminate(false)
-                                .setCloseOnFinish(true)
+                                .setProgressStyle(ProgressStyle.NORMAL)
+                                .setProgressMessage("Your content is loading...")
                                 .build())
+
                         .setCancelable(true)
                         .setCanceledOnTouchOutside(true)
                         .build();
-
-                final int max2 = 256;
-                final Delivery finalDelivery2 = delivery;
-                new Handler().post(new Runnable() {
-
-                    int progress = 0;
-
-                    @Override
-                    public void run() {
-
-                        progress += 16;
-
-                        // Get Progress style
-                        ProgressStyle style = (ProgressStyle) finalDelivery2.getStyle();
-                        style.setProgress(progress);
-                        style.setMax(max2);
-
-                        if(progress < max2){
-                            new Handler().postDelayed(this, 300);
-                        }
-
-
-                    }
-                });
 
                 break;
 
@@ -363,7 +393,7 @@ public class SupportMainActivity extends FragmentActivity implements View.OnClic
 
         // Show the delivery
         if(delivery != null)
-            delivery.show(getSupportFragmentManager(), tag);
+            delivery.show(getFragmentManager(), tag);
     }
 
     /**
@@ -377,4 +407,5 @@ public class SupportMainActivity extends FragmentActivity implements View.OnClic
     private int getColor(){
         return mPrefs.getInt(PREF_COLOR, getResources().getColor(R.color.blue_500));
     }
+
 }

@@ -2,7 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity" >
+    tools:context=".MainActivity"
+    android:paddingBottom="16dp"
+    android:clipToPadding="false"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,6 +38,18 @@
 
         </RelativeLayout>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="start|center_vertical"
+
+            android:paddingLeft="20dp"
+            android:text="Alert Dialogs"
+            android:textColor="?attr/subheader_text_color"
+            android:fontFamily="@string/font_fontFamily_medium"
+            android:textStyle="@integer/font_textStyle_medium"
+            />
+
         <Button
             android:id="@+id/alert_holo"
             android:layout_width="match_parent"
@@ -42,7 +57,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
 
-            android:text="Alert Holo"
+            android:text="Holo"
             />
 
         <Button
@@ -52,8 +67,52 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
 
-            android:text="Alert Material Design"
+            android:text="Material Design"
             />
+
+        <Button
+            android:id="@+id/alert_material_no_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+
+            android:text="Material Design No Title"
+            />
+
+        <Button
+            android:id="@+id/alert_material_mltpl_btns"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+
+            android:text="Material Design Multiple Buttons"
+            />
+
+        <Button
+            android:id="@+id/alert_material_btn_overflow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+
+            android:text="Material Design Button Overflow"
+            />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="start|center_vertical"
+
+            android:paddingLeft="20dp"
+            android:text="EditText Dialogs"
+            android:textColor="?attr/subheader_text_color"
+            android:fontFamily="@string/font_fontFamily_medium"
+            android:textStyle="@integer/font_textStyle_medium"
+            />
+
 
         <Button
             android:id="@+id/edittext_holo"
@@ -61,9 +120,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginTop="8dp"
 
-            android:text="EditText Holo"
+            android:text="Holo"
             />
 
         <Button
@@ -73,7 +131,19 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
 
-            android:text="EditText Material Design"
+            android:text="Material Design"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="start|center_vertical"
+
+            android:paddingLeft="20dp"
+            android:text="Progress Dialogs"
+            android:textColor="?attr/subheader_text_color"
+            android:fontFamily="@string/font_fontFamily_medium"
+            android:textStyle="@integer/font_textStyle_medium"
             />
 
         <Button
@@ -82,9 +152,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginTop="8dp"
 
-            android:text="Progress Holo"
+            android:text="Holo"
             />
 
         <Button
@@ -94,7 +163,19 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
 
-            android:text="Progress Material Design"
+            android:text="Material Design"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="start|center_vertical"
+
+            android:paddingLeft="20dp"
+            android:text="List Dialogs"
+            android:textColor="?attr/subheader_text_color"
+            android:fontFamily="@string/font_fontFamily_medium"
+            android:textStyle="@integer/font_textStyle_medium"
             />
 
         <Button
@@ -103,9 +184,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginTop="8dp"
 
-            android:text="List Holo"
+            android:text="Holo"
             />
 
         <Button
@@ -115,7 +195,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
 
-            android:text="List Material Design"
+            android:text="Material Design"
             />
 
     </LinearLayout>
