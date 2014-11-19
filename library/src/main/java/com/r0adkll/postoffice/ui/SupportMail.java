@@ -354,6 +354,31 @@ public class SupportMail extends DialogFragment {
     }
 
     /**
+     * Modify the message of the dialog
+     *
+     * @param message       the message to update with
+     */
+    public void setMessage(CharSequence message){
+        if(mConstruct != null && !mConstruct.getDesign().isMaterial()){
+            TextView msgView = (TextView) getDialog().findViewById(R.id.message);
+            msgView.setText(message);
+        }else{
+            if(mMessage != null){
+                mMessage.setText(message);
+            }
+        }
+    }
+
+    /**
+     * Modify the message of the dialog
+     *
+     * @param msgResId      the string resource id to use
+     */
+    public void setMessage(int msgResId){
+        setMessage(getString(msgResId));
+    }
+
+    /**
      * Convienence function for building an AlertDialog stylized to the Delivery
      * construct.
      *
