@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -141,19 +142,11 @@ public class SupportMail extends DialogFragment {
             if (mButtonContainer != null && mConstruct.getButtonConfig().size() > 0) {
 
                 // Iterate through config, and setup the button states
-                HashMap<Integer, Delivery.ButtonConfig> config = mConstruct.getButtonConfig();
+                LinkedHashMap<Integer, Delivery.ButtonConfig> config = mConstruct.getButtonConfig();
                 List<Integer> keys = new ArrayList<>(config.keySet());
 
-                // Fix for issue #18, Lollipop handles Set<> collections differently than older
-                // versions of android and for some reason when we adapt the keyset to an array
-                // list it reverses the added order of the buttons. So for now we will just
-                // reverse the list when the device is lollipop
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                    Collections.reverse(keys);
-
-                // Only sort if set to
-                if(mConstruct.isProperlySortingMaterialButton())
-                    Collections.sort(keys, mButtonComparator);
+                // Sort the button keys for proper sorting
+                Collections.sort(keys, mButtonComparator);
 
                 int N = keys.size();
                 for (int i = 0; i < N; i++) {
@@ -293,6 +286,8 @@ public class SupportMail extends DialogFragment {
             if(mConstruct != null) {
                 int theme = mConstruct.getDesign().isLight() ? android.R.style.Theme_Holo_Light : android.R.style.Theme_Holo;
                 setStyle(STYLE_NO_TITLE, theme);
+            }else{
+                dismiss();
             }
 
         }
@@ -529,7 +524,7 @@ public class SupportMail extends DialogFragment {
              */
             Integer lhsPriority = getButtonPriority(lhs);
             Integer rhsPriority = getButtonPriority(rhs);
-            return lhsPriority.compareTo(rhsPriority);
+            return rhsPriority.compareTo(lhsPriority);
         }
     };
 

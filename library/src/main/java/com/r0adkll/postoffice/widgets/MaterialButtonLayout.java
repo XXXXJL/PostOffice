@@ -13,6 +13,8 @@ import com.r0adkll.postoffice.R;
 import com.r0adkll.postoffice.model.Delivery;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -100,22 +102,19 @@ public class MaterialButtonLayout extends LinearLayout {
                         RippleView chd = (RippleView) getChildAt(j);
                         Button btn = (Button) chd.getChildAt(0);
                         btn.setGravity(Gravity.END|Gravity.CENTER_VERTICAL);
-
-                        if(mConstruct.isProperlySortingMaterialButton()){
-                            // Remove button and add to list to be reordered
-                            children.add(chd);
-                        }
+                        children.add(chd);
                     }
 
-                    // If the construct is proper ordering, reverse order the buttons
-                    if(mConstruct.isProperlySortingMaterialButton()) {
-                        // Clear out the chitlens
-                        removeAllViews();
+                    // Clear out the chitlens
+                    removeAllViews();
 
-                        for (int j = children.size() - 1; j >= 0; j--) {
-                            View chd = children.get(j);
-                            addView(chd);
-                        }
+                    // Sort buttons properly
+                    Collections.sort(children, mButtonComparator);
+
+                    // Re-Add all the views
+                    for(int j=0; j<children.size(); j++){
+                        View chd = children.get(j);
+                        addView(chd);
                     }
 
                     // Switch orientation
@@ -130,4 +129,14 @@ public class MaterialButtonLayout extends LinearLayout {
 
 
     }
+
+    private Comparator<View> mButtonComparator = new Comparator<View>() {
+        @Override
+        public int compare(View lhs, View rhs) {
+            Integer lhsBtn = lhs.getId();
+            Integer rhsBtn = rhs.getId();
+            return rhsBtn.compareTo(lhsBtn);
+        }
+    };
+
 }

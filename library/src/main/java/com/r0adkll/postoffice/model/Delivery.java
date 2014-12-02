@@ -14,6 +14,7 @@ import com.r0adkll.postoffice.ui.Mail;
 import com.r0adkll.postoffice.ui.SupportMail;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * This is the main construct that contains all the configuration data needed
@@ -43,7 +44,7 @@ public class Delivery {
     private int mAutoLinkMask = 0;
     private MovementMethod mMovementMethod = null;
 
-    private HashMap<Integer, Delivery.ButtonConfig> mButtonMap;
+    private LinkedHashMap<Integer, ButtonConfig> mButtonMap;
     private SparseIntArray mButtonTextColorMap;
     private boolean mProperSortButtons = true;
 
@@ -65,7 +66,7 @@ public class Delivery {
      */
     private Delivery(Context ctx){
         mCtx = ctx;
-        mButtonMap = new HashMap<>();
+        mButtonMap = new LinkedHashMap<>();
         mButtonTextColorMap = new SparseIntArray();
     }
 
@@ -207,7 +208,7 @@ public class Delivery {
      *
      * @return      the map of button config
      */
-    public HashMap<Integer, ButtonConfig> getButtonConfig(){
+    public LinkedHashMap<Integer, ButtonConfig> getButtonConfig(){
         return mButtonMap;
     }
 
@@ -216,7 +217,9 @@ public class Delivery {
      * in the order of: POSITIVE, NEUTRAL, NEGATIVE
      *
      * @return      true if we should properly sort the dialog buttons, false if its FIFO
+     * @deprecated  this is no longer needed as the buttons will now always be properly sorted
      */
+    @Deprecated
     public boolean isProperlySortingMaterialButton(){
         return mProperSortButtons;
     }
@@ -694,7 +697,9 @@ public class Delivery {
          *
          * @param sort      flag to sort
          * @return          self for chaining
+         * @deprecated      This is now deprecated, as the buttons will always be properly sorted
          */
+        @Deprecated
         public Builder setShouldProperlySortButtons(boolean sort){
             delivery.mProperSortButtons = sort;
             return this;
