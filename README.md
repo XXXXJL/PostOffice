@@ -1,4 +1,12 @@
-# PostOffice  
+# PostOffice
+
+### Feature Branch  
+**Support v22.1 & RxJava Upgrade**
+
+This branch is for reconfiguring this library to leverage the new Material dialog features added in the recent support library update, **22.1**. I also aim to make the dialogs leverage RxJava to become reactive, This is extremely experimental and may or may not make it into the next version.
+
+---
+
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.r0adkll/postoffice/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/com.r0adkll/postoffice) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-PostOffice-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1024)    
 
 This is a library for easily constructing Holo and Material Design Dialogs in either Light or Dark modes, and are completely styleable and customizable. 
