@@ -23,7 +23,6 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:support-v4:22.1.1'
     compile 'co.52inc:fontloader:1.0.1'
-    compile 'com.github.traex.rippleeffect:library:1.2.2'
 }
 
 apply from: '../gradle-mvn-push.gradle'
