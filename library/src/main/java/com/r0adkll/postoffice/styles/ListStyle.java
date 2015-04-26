@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -38,6 +39,7 @@ public class ListStyle<T> implements Style, AdapterView.OnItemClickListener {
         mContainer.setOrientation(LinearLayout.VERTICAL);
         mSeperator = new ImageView(ctx);
         mSeperator.setBackgroundResource(R.color.grey_400);
+        mSeperator.setVisibility(View.GONE);
         mSeperator.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 2));
         mContainer.addView(mSeperator);
 
@@ -46,6 +48,21 @@ public class ListStyle<T> implements Style, AdapterView.OnItemClickListener {
 
         // Set Default item click listener
         mListView.setOnItemClickListener(this);
+        mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if(firstVisibleItem > 0){
+                    mSeperator.setVisibility(View.VISIBLE);
+                }else{
+                    mSeperator.setVisibility(View.GONE);
+                }
+            }
+        });
 
     }
 

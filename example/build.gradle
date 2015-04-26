@@ -3,7 +3,7 @@ apply plugin: 'play'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion '21.0.2'
+    buildToolsVersion '21.1.2'
 
     defaultConfig {
         applicationId "com.r0adkll.postoffice.example"
@@ -35,8 +35,10 @@ android {
     }
 
     play {
+        track = 'production'
         serviceAccountEmail = R0ADKLL_PLAY_DEV_EMAIL
         pk12File = file(R0ADKLL_PLAY_DEV_CERT)
+        uploadImages = true
     }
 
 }
