@@ -1,3 +1,9 @@
+---
+# DEPRECATED
+This library is no longer maintained! Please checkout the support dialogs in appcompat or https://github.com/afollestad/material-dialogs
+
+---
+
 # PostOffice  
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.r0adkll/postoffice/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/com.r0adkll/postoffice) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-PostOffice-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1024)    
 
